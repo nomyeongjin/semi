@@ -155,7 +155,7 @@ footer span {
    border-bottom: 1px solid var(--main-color);
 }
 #loginFrm>input:hover{
-   border: 1px solid var(--main-color);
+   border: 2px solid var(--main-color);
    border-radius: 3px;
 }
 #loginFrm>input:focus{
