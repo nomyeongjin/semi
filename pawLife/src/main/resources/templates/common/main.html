@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>메인</title>
+
+
+   <!-- templetes/common/common.html  조각 추가 -->
+   <th:block th:replace="~{common/common}"></th:block>
+   <div id="common"></div>
+
+</head>
+<body>
+   <main>
+      <!-- templetes/common/header.html  조각 추가 -->
+      <th:block th:replace="~{common/header}"></th:block>
+      <div id="header"></div>
+      
+      <!-- 캐러셀 (우선 영역만 지정, 추후 추가 예정) -->
+      <div class="carousel"></div>
+
+      
+      <section class="content1">
+         <!-- 레이아웃용 빈공간 -->
+         <div></div>
+
+         <!-- 로그인 박스 -->
+         <div class="login-box">
+            <!-- 아이디/비밀번호 입력 -->
+            <form action="#" method="POST" id="loginFrm">
+                  <input type="text" name="memberEmail" placeholder="이메일">
+                  <input type="password" name="memberPw" placeholder="비밀번호">               
+               <button>로그인</button>
+            </form>
+         </div>
+      </section>
+
+
+
+      <!-- 입양 게시판 -->
+      <section class="card-container">
+         <a>입양 게시판<i class="fa-solid fa-chevron-right"></i></a>
+         <div>
+            <div class="card">
+               <img class="card-img" src="/images/dog1.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">예쁜 강아지</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+            <div class="card">
+               <img class="card-img" src="/images/dog2.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">귀여운 강아지</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+            <div class="card">
+               <img class="card-img" src="/images/dog3.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">졸린 강아지</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+         </div>
+      </section>
+
+      <!-- 후기 게시판 -->
+      <section class="card-container">
+         <a>후기 게시판<i class="fa-solid fa-chevron-right"></i></a>
+         <div>
+            <div class="card">
+               <img class="card-img" src="/images/cat1.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">예쁜 고양이</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+            <div class="card">
+               <img class="card-img" src="/images/cat2.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">귀여운 고양이</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+            <div class="card">
+               <img class="card-img" src="/images/cat3.jpg" alt="게시판 썸네일 이미지">
+               <a href="#" class="card-title">누워있는 고양이</a>
+               <!-- ../../static/images/dog1.jpg -->
+            </div>
+         </div>
+      </section>
+
+   </main>
+
+   <!-- templetes/common/footer.html  조각 추가 -->
+   <th:block th:replace="~{common/footer}"></th:block> 
+   <div id="footer"></div>
+
+   <!-- 타임리프 사용전까지 헤더, 푸터 연결하는 코드조각 연결 스크립트 (추후 jquery스크립트부터 즉시함수 구문 삭제할것!)  -->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script type="text/javascript">   
+      $(function(){
+         $("#common").load("./common.html");
+         $("#header").load("./header.html");
+         $("#footer").load("./footer.html");
+      });
+   </script> -->
+</body>
+</html>
