@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.project.pawlife.adoption.model.service.AdoptionService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,9 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdoptionController {
 	
-	GetMapping("adoptionList")
+	private final AdoptionService service;
+	
+	@GetMapping("adoptionList")
 	public String adoption() {
-		return "";
+		return "adoption/adoptionList";
 	}
 
 }
