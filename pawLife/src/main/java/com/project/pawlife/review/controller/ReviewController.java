@@ -19,6 +19,9 @@ public class ReviewController {
 	@Autowired
 	private final ReviewService service;
 	
+	/** 리뷰 게시판 리스트로 이동
+	 * @return
+	 */
 	@GetMapping("reviewList")
 	public String reviewPage() {
 		return "review/reviewList";

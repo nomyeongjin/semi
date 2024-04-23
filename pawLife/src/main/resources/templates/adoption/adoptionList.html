@@ -20,10 +20,10 @@
 
             <div class="card-row">
                <!-- 1,2,3,4 -->
-               <div class="card">
-                  <img class="card-img" src="/images/dog1.jpg" alt="게시판 썸네일 이미지">
-                  <a href="#" class="card-title">예쁜 강아지</a>
-               </div>
+                <label for="card" class="card">
+                    <img class="card-img" src="/images/dog1.jpg" alt="게시판 썸네일 이미지">
+                    <a href="/adoption/adoptionDetail" class="card-title" id="card">예쁜 강아지</a>
+                </label>
                <!--  -->
                <div class="card">
                   <img class="card-img" src="/images/dog2.jpg" alt="게시판 썸네일 이미지">
@@ -116,5 +116,7 @@
     </div>
     </main>
     <th:block th:replace="~{common/footer}"></th:block> 
+
+    <script src="/js/adoption/adoptionList.js"></script>
 </body>
 </html>

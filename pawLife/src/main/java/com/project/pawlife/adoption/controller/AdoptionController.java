@@ -19,9 +19,29 @@ public class AdoptionController {
 	@Autowired
 	private final AdoptionService service;
 	
+	/** 입양 게시판 리스트 항목으로 이동
+	 * @return
+	 */
 	@GetMapping("adoptionList")
 	public String adoptionPage() {
 		return "adoption/adoptionList";
 	}
+	
+	/** 입양 상세 조회
+	 * @return
+	 */
+	@GetMapping("adoptionDetail")
+	public String adoptionDetail() {
+		return "adoption/adoptionDetail";
+	}
+	
+	/** 입양 글쓰기
+	 * @return
+	 */
+	@GetMapping("adoptionWrite")
+	public String adoptionWrite() {
+		return "adoption/adoptionWrite";
+	}
+	
 
 }
