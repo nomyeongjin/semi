@@ -43,5 +43,13 @@ public class AdoptionController {
 		return "adoption/adoptionWrite";
 	}
 	
+	/** 입양 수정
+	 * @return
+	 */
+	@GetMapping("adoptionUpdate")
+	public String adoptionUpdate() {
+		return "adoption/adoptionUpdate";
+	}
+	
 
 }
