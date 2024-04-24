@@ -111,7 +111,14 @@
 /* 프로필 닉네임 */
 #profileNickName{
 
-    font-size: 13px;
+
+  font-size: 13px;
+  width: 150px;
+  height: 24px;
+  padding-left: 5px;
+  border : none;
+  outline: none;
+  border-bottom: 2px solid var(--main-color);
     
 }
 /* 자기 소개 한마디 */
@@ -131,6 +138,7 @@
 /* 개인 정보 수정 버튼 */
 #profileUpdateBtn{
   
+    cursor: pointer;
     border:1px solid black;
     background-color: black;
     color: white;
@@ -279,11 +287,23 @@
 
 .profile-updatecontainer > *{
 
-  margin-top: 40px;
+  margin-bottom: 50px;
 }
 
+/* 프로필 닉네임 공간 */
+.profileNickNamebox{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+  height: 100px;
 
+}
 
+#nickMessage{
+  margin-top: 20px;
+  font-size: 15px;
+}
 
 
 /* 비밀번호, 닉네임, 전화번호 부분 */
@@ -294,8 +314,26 @@
 #profileUpdateForm .signup-updatecontent{
     display: flex;
     flex-direction: column;
-    margin: 70px 0px 100px 200px;
+    justify-content: center;
+    align-items: center;
+ 
    
+  }
+
+  .signup-updatebox{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 500px;
+  }
+
+  /* 닉네임 */
+  .profileNickName{
+    border : none;
+    outline: none;
+    border-bottom: 2px solid var(--main-color);
   }
   
   #profileUpdateForm .signup-updatecontent > label{
@@ -353,7 +391,7 @@
 .profileUpdateBtn-area{
   display: flex;
   justify-content: center;
-  margin-bottom: 100px;
+  margin: 100px;
 }
 
 #profileCompeleteBtn{
