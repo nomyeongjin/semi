@@ -15,7 +15,13 @@
         <section class="board">
 
 
-            <h1>제목</h1>
+            <div class="title-area">
+                <h1>제목</h1>
+                <div class="btn-area">
+                    <button class="update-btn">수정</button>
+                    <button class="delete-btn">삭제</button>
+                </div>
+            </div>
 
 
             <div class="info-bar">
@@ -89,7 +95,7 @@
 
     </main>
     <th:block th:replace="~{common/footer}"></th:block> 
-
+    <script src="/js/adoption/adoptionDetail.js"></script>
     
 </body>
 </html>

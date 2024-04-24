@@ -49,5 +49,13 @@ public class AdoptionController {
 	@GetMapping("adoptionContact")
 	public String contact() { return "adoption/adoptionContact"; }
 	
+	/** 입양 수정
+	 * @return
+	 */
+	@GetMapping("adoptionUpdate")
+	public String adoptionUpdate() {
+		return "adoption/adoptionUpdate";
+	}
+	
 
 }

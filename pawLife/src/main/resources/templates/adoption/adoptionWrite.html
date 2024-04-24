@@ -19,18 +19,23 @@
                 <h1><input type="text" placeholder="제목" id="inputTitle"></h1>
     
     
-                <hr>
     
     
                 <section class="board-box">
+
                     <div class="info-box">
-                        
-                        <input type="file" class="adoption-img">
+                        <div class="info-img">
+                            <label for="animalImg">
+                                <img class="preview" src="">
+                            </label>
+                            <input type="file" class="adoption-img" id="animalImg" accept="image/*">
+                            <span class="delete-image">&times;</span>
+                        </div>
                         <div class="infomation">
-                        이름 : <input type="text"><br>
-                        나이 : <input type="text"><br>
-                        종 : <input type="text"><br>
-                        발견장소 : <input type="text"><br>
+                        <input type="text" placeholder="이름"><br>
+                        <input type="text" placeholder="나이"><br>
+                        <input type="text" placeholder="종"><br>
+                        <input type="text" placeholder="발견장소"><br>
                         </div>
 
     
