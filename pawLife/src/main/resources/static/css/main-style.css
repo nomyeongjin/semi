@@ -118,7 +118,6 @@ footer span {
 /* ***  carousel  *** */
 /* ------------------ */
 .slideshow-container {
-   max-width: 1000px;
    height: 300px;
    position: relative;
    margin: auto;
@@ -128,6 +127,7 @@ footer span {
  }
 .mySlides>img {
    vertical-align: middle;
+   object-fit: cover;
    width: 100%;
    height: 300px;
 }
