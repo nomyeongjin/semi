@@ -210,4 +210,8 @@ footer span {
    margin: 20px 30px;
    border-radius: 10px;
 }
+.card > img:hover{
+   transform: scale(1.02);
+   transition: 0.3s;
+}
 
