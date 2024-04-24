@@ -24,46 +24,22 @@ body{
     min-height: 100vh;      /* 최소 높이를 화면 비율 100% */
  }
 
-/* ********************************************************************* */
-
-/* 인포바(프로필, 닉네임 북마크바) */
-.info-bar{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 0;
-}
-
-.info{
-    display: flex;
-    align-items: center;
-    padding: 20px;
-}
-/* 프로필 이미지 */
-#profile{
-    width: 30px;
-    height: 30px;
-    border-radius: 50px;
-    margin-right: 5px;
-}
-.bookmark{
-    display: flex;
-    justify-content: end;
-    
-    cursor: pointer;
-}
-
-.view-count{
-    margin-bottom: 5px;
-}
-
-.right-bar{
-    justify-content: end;
-    flex-direction: row;
-}
-
 
 /* ***************************************************************** */
+
+/* 제목 */
+#inputTitle{
+    outline: none;
+    border:none;
+    border-bottom: 1px solid gray;
+    margin: 20px 0;
+    padding: 10px 5px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+}
+
+
 .board{
     max-width: 800px;
     margin: auto;
@@ -145,22 +121,13 @@ body{
     cursor: pointer;
 }
 
+/* 에디터 */
+
 textarea{
-    resize: none;
     width: 100%;
-    outline: none;
+    height: 500px;
     font-size: 16px;
     padding: 10px;
 }
 
-#inputTitle{
-    outline: none;
-    border:none;
-    border-bottom: 1px solid gray;
-    margin: 20px 0;
-    padding: 10px 5px;
-    font-size: 18px;
-    font-weight: bold;
-    width: 100%;
-}
 

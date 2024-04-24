@@ -35,7 +35,8 @@ header {
    margin: 10px;
    height: 200px;
    display: flex;
-   flex-direction: column;  
+   flex-direction: column; 
+   
 }
 /* 로그인, 회원가입 */
 .header-top-menu {
@@ -70,6 +71,7 @@ nav {
    height: 50px;
    position: sticky;
    z-index: 1000;
+   border-bottom: 1px solid var(--main-color); 
 }
 nav>ul {
    display: flex;
