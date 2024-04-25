@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.project.pawlife.adoption.model.dto.Adopt;
 import com.project.pawlife.adoption.model.service.AdoptionService;
 
 import lombok.RequiredArgsConstructor;
@@ -53,9 +56,13 @@ public class AdoptionController {
 	 * @return
 	 */
 	@PostMapping("adoptionWrite")
-	public String adoptionWrite(@RequestBody Map<String, Object> map) {
+	public String adoptionWrite(
+			Adopt inputAdopt,
+			@RequestParam("thumnailImg") MultipartFile thumnailImg
+			) {
 
-		int result = service.adoptionWrite(map);
+		
+		int result = service.adoptionWrite(inputAdopt,thumnailImg);
 		
 		return "redirect:/";
 	}
