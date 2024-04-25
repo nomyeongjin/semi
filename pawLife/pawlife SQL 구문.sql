@@ -339,4 +339,12 @@ SELECT * FROM REVIEW;
 
 
 
+------------------------------
+-- 후기게시판 게시글 작성
+
+INSERT INTO "REVIEW"
+VALUES(SEQ_REVIEW_NO.NEXTVAL, '게시글 테스트', '게시글 내용',
+			 DEFAULT, DEFAULT, DEFAULT, DEFAULT, 2, 2);
+
+
 
