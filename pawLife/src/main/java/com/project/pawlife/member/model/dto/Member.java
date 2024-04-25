@@ -21,4 +21,5 @@ public class Member {
 	private String memberDelFl;
 	private int authority;
 	
+	
 }

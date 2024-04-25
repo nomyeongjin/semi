@@ -33,11 +33,30 @@ a {
 /* ------------------ */
 header {
    margin: 10px;
-   height: 200px;
+   height: 130px;
    display: flex;
    flex-direction: column; 
    
 }
+
+.login-area{
+   width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.login-box{
+   width: 25px;
+   height: 25px;
+}
+#memberProfile{
+
+width: 25px;
+height: 25px;
+}
+
+
 /* 로그인, 회원가입 */
 .header-top-menu {
    display: flex;
