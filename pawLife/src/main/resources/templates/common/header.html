@@ -6,13 +6,17 @@
     <!-- 로그인, 회원가입 -->
     <section class="header-top-menu">
         <div class="login-area">
-            <a href="/myPage/first">
-                <img th:with="user=#{user.default.image}" 
-                  th:src="${user}"
-                  id="memberProfile"
-                  alt="프로필 이미지">
-            </a>
-            <a href="/member/login">로그인</a>|<a href="/member/signup">회원가입</a>|<a href="/member/logout" id="logoutBtn">로그아웃</a>
+            <div class="login-box">
+                <a href="/myPage/first">
+                    <img th:with="user=#{user.default.image}" 
+                      th:src="${user}"  
+                      id="memberProfile"
+                      alt="프로필 이미지">
+                </a>
+            </div>
+            <div class="login-acontainer">
+                <a href="/member/login">로그인</a>|<a href="/member/signup">회원가입</a>|<a href="/member/logout" id="logoutBtn">로그아웃</a>
+            </div>
         </div>
     </section>
 
