@@ -123,6 +123,30 @@ public class MemberController {
 			
 			return "redirect:/"; 
 		}
+		
+		/** 빠른 로그인 (나중에 지우기)
+		 * @param memberEmail
+		 * @param model
+		 * @param ra
+		 * @return
+		 */
+		@GetMapping("quickLogin")
+		public String quickLogin(
+				@RequestParam("memberEmail") String memberEmail,
+				Model model,
+				RedirectAttributes ra) {
+			
+			Member loginMember = service.quickLogin(memberEmail);
+			
+			if(loginMember == null) {
+				ra.addFlashAttribute("message","해당 회원은 존재하지 않습니다");
+			}
+			if( loginMember !=null) {
+				model.addAttribute("loginMember",loginMember);
+			}
+			
+			return "redirect:/";
+		}
 }
 
 

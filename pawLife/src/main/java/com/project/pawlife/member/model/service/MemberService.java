@@ -10,4 +10,10 @@ public interface MemberService {
 	 */
 	Member login(Member inputMember);
 
+	/** 빠른 로그인
+	 * @param memberEmail
+	 * @return loginMember
+	 */
+	Member quickLogin(String memberEmail);
+
 }

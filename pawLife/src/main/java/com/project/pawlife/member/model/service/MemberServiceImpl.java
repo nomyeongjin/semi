@@ -53,5 +53,21 @@ public Member login(Member inputMember) {
 		
 	return loginMember;  
 }
-	
+
+   // 빠른 로그인
+   // loginMember를 반환해줌
+	@Override
+	public Member quickLogin(String memberEmail) {
+		
+		Member loginMember = mapper.login(memberEmail);
+		
+		// 회원이 없는 경우 null 돌려보냄
+		if(loginMember == null) return null;
+		
+		// 회원 있는 경우 session에 올라간 비밀번호 null로 지우기
+		loginMember.setMemberPw(null);
+		
+		return loginMember;
+	}
+		
 }
