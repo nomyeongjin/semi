@@ -12,7 +12,7 @@
 				#{adoptName},
 				#{adoptAge},
 				#{adoptType},
-				2, 1, DEFAULT,
+				#{memberNo}, 1, DEFAULT,
 				#{adoptAddress})
 
 	</insert>

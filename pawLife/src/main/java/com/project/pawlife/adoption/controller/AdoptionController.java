@@ -65,11 +65,15 @@ public class AdoptionController {
 	public String adoptionInsert(
 			Adopt inputAdopt,
 			@RequestParam("thumnailImg") MultipartFile thumnailImg,
-			@RequestParam("adoptContent") String adoptContent
+			@RequestParam("adoptContent") String adoptContent,
+			@SessionAttribute("loginMember") Member loginMember
 			) {
 
+
+		int memberNo = loginMember.getMemberNo(); 
 		
-		int result = service.adoptionInsert(inputAdopt,thumnailImg);
+		int result = service.adoptionInsert(inputAdopt,thumnailImg,memberNo);
+		
 		
 		String path=null;
 		
