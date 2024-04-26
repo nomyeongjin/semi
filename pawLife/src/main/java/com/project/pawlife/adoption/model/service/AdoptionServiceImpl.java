@@ -34,7 +34,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
 	// 입양 게시글 작성
 	@Override
-	public int adoptionInsert(Adopt inputAdopt, MultipartFile thumnailImg){
+	public int adoptionInsert(Adopt inputAdopt, MultipartFile thumnailImg,int memberNo){
 		
 		
 		// 수정할 경로
@@ -54,6 +54,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 			updatePath = profileWebPath+rename;
 			
 			inputAdopt.setThumnail(updatePath);
+			inputAdopt.setMemberNo(memberNo);
 		}
 				
 		
