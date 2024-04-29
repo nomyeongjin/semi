@@ -33,6 +33,19 @@ public interface AdoptionMapper {
 	 * @param map
 	 * @return
 	 */
-	Adopt selectOneAdopt(Map<String, Integer> map); 
+	Adopt selectOneAdopt(Map<String, Integer> map);
+
+
+	/** 북마크 해제(DELETE)
+	 * @param map
+	 * @return
+	 */
+	int deleteBookCheck(Map<String, Integer> map);
+
+	/** 북마크 체크(INSERT)
+	 * @param map
+	 * @return
+	 */
+	int insertBookCheck(Map<String, Integer> map);
 	
 }

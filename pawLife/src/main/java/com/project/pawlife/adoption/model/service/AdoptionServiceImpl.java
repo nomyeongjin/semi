@@ -124,6 +124,27 @@ public class AdoptionServiceImpl implements AdoptionService {
 		
 		return mapper.selectOneAdopt(map);
 	}
+
+	// 북마크 체크/ 해제
+	@Override
+	public int bookCheck(Map<String, Integer> map) {
+		
+		int result =0;
+		
+	   if(map.get("bookMark") == 1) { // bookmarkcheck 테이블에 delete
+			
+			result = mapper.deleteBookCheck(map);
+	
+		}
+	   // 북마크가 해제된 상태인 경우 bookMark ==0
+	   
+	   else {
+		   result = mapper.insertBookCheck(map);
+	   }
+		
+		
+		return -1;
+	}
 	
 	
 	

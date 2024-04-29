@@ -54,4 +54,21 @@
 		AND BOARD_CODE=1
 		AND ADOPT_NO=#{adoptNo}
 	</select>
+	
+	
+	
+	 <!-- 북마크 해제 -->
+ <delete id="deleteBookCheck">
+  DELETE FROM "BOOKMARK"
+  WHERE MEMBER_NO = #{memberNo}
+  AND ADOPT_NO = #{adoptNo}
+ </delete>
+ 
+ <!-- 북마크 체크 -->
+ <insert id="insertBookCheck">
+   	INSERT INTO "BOOKMARK" (MEMBER_NO, ADOPT_NO)
+	VALUES(#{memberNo}, #{adoptNo})
+ </insert>
+ 
+	
 </mapper>
