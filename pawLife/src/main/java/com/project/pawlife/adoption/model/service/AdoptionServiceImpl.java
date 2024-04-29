@@ -1,7 +1,11 @@
 package com.project.pawlife.adoption.model.service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -11,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.pawlife.adoption.model.dto.Adopt;
 import com.project.pawlife.adoption.model.mapper.AdoptionMapper;
+import com.project.pawlife.common.util.Pagination;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,4 +78,53 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return result;
 		
 		}
+	
+	@Override
+	public Map<String, Object> selectAdoptList(int cp) {
+
+		// 삭제 되지 않은 게시글 수 조회
+		int listCount = mapper.getListCount();
+		
+		// Pagination 객체 생성
+		// * Pagination 객체 : 게시글 목록 구성에 필요한 값을 저장
+		Pagination pagination = new Pagination(cp, listCount);
+		
+		// 페이지 목록 조회
+		
+		/* ROWBOUND 객체 (MyBatis 제공 객체)
+		 * 
+		 * 지정된 크기(offset)만큼 건너뛰고
+		 * 제한된 크기(limit) 만큼의 행을 조회하는 객체
+		 * 
+		 * */
+		
+		int limit = pagination.getLimit();
+		int offset = (cp-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<Adopt> adoptList = mapper.selectAdoptList(rowBounds);
+		
+		// 목록 조회결과 Pagination 객페를 Map으로 묶음
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("pagination", pagination);
+		map.put("adoptList", adoptList);
+		
+		
+		// 결과 반환
+		return map;
+	}
+	
+	// 게시글 상세 조회
+	@Override
+	public Adopt selectOneAdopt(Map<String, Integer> map) {
+		
+		
+		
+		return mapper.selectOneAdopt(map);
+	}
+	
+	
+	
 }
