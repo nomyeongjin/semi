@@ -1,0 +1,869 @@
+From e8c661e7737dee97b9051a6ed27c630ce0a0455c Mon Sep 17 00:00:00 2001
+From: limhyunjo <sibagyeoni@gmail.com>
+Date: Mon, 29 Apr 2024 14:47:50 +0900
+Subject: [PATCH] =?UTF-8?q?=EB=A7=88=EC=9D=B4=ED=8E=98=EC=9D=B4=EC=A7=80?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ pawLife/pawlife SQL 구문.sql                  |  41 ++++
+ .../pawlife/member/model/dto/Member.java      |   4 +
+ .../myPage/controller/MyPageController.java   |  79 +++++++-
+ .../pawlife/myPage/model/dto/myPage.java      |  10 -
+ .../myPage/model/mapper/MyPageMapper.java     |  23 ++-
+ .../myPage/model/service/MyPageService.java   |  31 ++-
+ .../model/service/MyPageServiceImpl.java      |  88 ++++++++-
+ .../main/resources/mappers/myPage-mapper.xml  |  33 +++-
+ .../main/resources/static/js/myPage/myPage.js | 186 +++++++++++++-----
+ .../templates/myPage/myPage-first.html        |   8 +-
+ .../templates/myPage/myPage-myBookMark.html   |   1 +
+ 11 files changed, 434 insertions(+), 70 deletions(-)
+ delete mode 100644 pawLife/src/main/java/com/project/pawlife/myPage/model/dto/myPage.java
+
+diff --git a/pawLife/pawlife SQL 구문.sql b/pawLife/pawlife SQL 구문.sql
+index 632c60d..a4968a6 100644
+--- a/pawLife/pawlife SQL 구문.sql	
++++ b/pawLife/pawlife SQL 구문.sql	
+@@ -79,6 +79,7 @@ COMMENT ON COLUMN "BOARD_TYPE"."BOARD_CODE" IS '게시판 종류 코드 번호';
+ 
+ COMMENT ON COLUMN "BOARD_TYPE"."BOARD_NAME" IS '게시판명';
+ 
++-- BOOKMARK 테이블
+ CREATE TABLE "BOOKMARK" (
+ 	"MEMBER_NO"	NUMBER		NOT NULL,
+ 	"ADOPT_NO"	NUMBER		NOT NULL
+@@ -239,6 +240,16 @@ ALTER TABLE "COMMENT" ADD
+ CONSTRAINT "COMMENT_DEL_FL"
+ CHECK("COMMENT_DEL_FL" IN ('Y', 'N'));
+ 
++
++--BOOKMARK 테이블 북마크 체크 여부 컬럼 추가
++ALTER TABLE "BOOKMARK" ADD(BOOKMARK_CHECK CHAR(1) DEFAULT 'N');
++
++-- 게시글 북마크 여부
++ALTER TABLE "BOOKMARK" ADD
++CONSTRAINT "BOOKMARK_CHECK"
++CHECK("BOOKMARK_CHECK" IN ('Y', 'N'));
++
++
+ ----------------------------------------------------------------------------------------------------------------
+ 
+ /* 샘플 데이터 삽입 */
+@@ -346,5 +357,35 @@ INSERT INTO "REVIEW"
+ VALUES(SEQ_REVIEW_NO.NEXTVAL, '게시글 테스트', '게시글 내용',
+ 			 DEFAULT, DEFAULT, DEFAULT, DEFAULT, 2, 2);
+ 
++     SELECT REVIEW_TITLE, COMMENT_CONTENT,
++     TO_CHAR( COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" PM HH"시" MI"분" SS"초"') 
++     FROM "REVIEW"
++     JOIN "COMMENT" USING (REVIEW_NO)
++     WHERE "COMMENT".MEMBER_NO=1
++     ORDER BY COMMENT_WRITE_DATE DESC;
++
++    
++    
++------------------------------
++-- 이메일 인증키 테이블 생성
++CREATE TABLE "AUTH_KEY" (
++	"KEY_NO"	NUMBER		NOT NULL,
++	"EMAIL"	NVARCHAR2(50)		NOT NULL,
++	"AUTH_KEY"	CHAR(6)		NOT NULL,
++	"CREATE_TIME"	DATE	DEFAULT SYSDATE	NOT NULL
++);
++
++COMMENT ON COLUMN "AUTH_KEY"."KEY_NO" IS '인증키 구분 번호 (시퀀스 생성)';
++
++COMMENT ON COLUMN "AUTH_KEY"."EMAIL" IS '인증 이메일';
++
++COMMENT ON COLUMN "AUTH_KEY"."AUTH_KEY" IS '인증번호';
++
++COMMENT ON COLUMN "AUTH_KEY"."CREATE_TIME" IS '인증 번호 생성 시간';
++
++ALTER TABLE "AUTH_KEY" ADD CONSTRAINT "PK_AUTH_KEY" PRIMARY KEY (
++	"KEY_NO"
++);
++
+ 
+ 
+diff --git a/pawLife/src/main/java/com/project/pawlife/member/model/dto/Member.java b/pawLife/src/main/java/com/project/pawlife/member/model/dto/Member.java
+index bfd7e55..f3afac1 100644
+--- a/pawLife/src/main/java/com/project/pawlife/member/model/dto/Member.java
++++ b/pawLife/src/main/java/com/project/pawlife/member/model/dto/Member.java
+@@ -1,5 +1,7 @@
+ package com.project.pawlife.member.model.dto;
+ 
++import lombok.AllArgsConstructor;
++import lombok.Builder;
+ import lombok.Getter;
+ import lombok.NoArgsConstructor;
+ import lombok.Setter;
+@@ -9,6 +11,8 @@ import lombok.ToString;
+ @Setter
+ @NoArgsConstructor
+ @ToString
++@Builder
++@AllArgsConstructor
+ public class Member {
+ 
+ 	private int memberNo;
+diff --git a/pawLife/src/main/java/com/project/pawlife/myPage/controller/MyPageController.java b/pawLife/src/main/java/com/project/pawlife/myPage/controller/MyPageController.java
+index ea9ba2b..397690a 100644
+--- a/pawLife/src/main/java/com/project/pawlife/myPage/controller/MyPageController.java
++++ b/pawLife/src/main/java/com/project/pawlife/myPage/controller/MyPageController.java
+@@ -1,15 +1,20 @@
+ package com.project.pawlife.myPage.controller;
+ 
++import java.io.IOException;
+ import java.util.List;
+ 
+ import org.springframework.stereotype.Controller;
+ import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.bind.annotation.ResponseBody;
+ import org.springframework.web.bind.annotation.SessionAttribute;
+ import org.springframework.web.bind.annotation.SessionAttributes;
++import org.springframework.web.multipart.MultipartFile;
++import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+ 
++import com.project.pawlife.adoption.model.dto.Adopt;
+ import com.project.pawlife.member.model.dto.Member;
+ import com.project.pawlife.myPage.model.service.MyPageService;
+ import com.project.pawlife.review.model.dto.Review;
+@@ -45,7 +50,7 @@ public class MyPageController {
+    }
+ 
+ 
+-   // myPage에서 내가 쓴 후기 게시글 전체 조회
++   // 로그인한 회원이 작성한 후기 게시글 전체 조회
+    @ResponseBody
+    @GetMapping("selectReview")
+    public List<Review> selectReview(
+@@ -59,5 +64,77 @@ public class MyPageController {
+ 	
+ 	return reviewList;
+    }
++   
++	   /** 로그인한 회원이 작성한 댓글 전체 조회
++	 * @param loginMember
++	 * @param ra
++	 * @return
++	 */
++    @ResponseBody
++	@GetMapping("selectComment")
++	public List<Review> selectComment(@SessionAttribute("loginMember") Member loginMember,
++			RedirectAttributes ra) {
++
++		int memberNo = loginMember.getMemberNo();
++
++		List<Review> commentList = service.selectComment(memberNo);
++		/*
++		 * String message=null;
++		 * 
++		 * if(commentList ==null ) ra.addFlashAttribute("message",message);
++		 */
++		 
++		return commentList;
++	}
++
++   
++    @GetMapping("selectBookMark")
++    public List<Adopt> selectBookMark(
++    	@SessionAttribute("loginMember") Member loginMember, 
++    	RedirectAttributes ra
++    		){
++    	int memberNo = loginMember.getMemberNo();
++
++    	List<Adopt> bookmarkList = service.selectBookMark(memberNo);
++    	
++    	
++    	return bookmarkList;
++    }
++
++   
++   /**
++	 * 프로필 이미지 변경
++	 * 
++	 * @param profileImg
++	 * @param loginMember
++	 * @param ra
++	 * @return
++	 * @throws IOException
++	 * @throws IllegalStateException
++	 */
++	@PostMapping("profile")
++	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
++			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra)
++			throws IllegalStateException, IOException {
++
++		// 로그인한 회원 번호
++		int memberNo = loginMember.getMemberNo();
++
++		// 서비스 호출
++		// /myPage/profile/변경된파일명 형태의 문자열
++		// 현재 로그인한 회원의 PROFILE_IMG 컬럼 값으로 수정(UPDATE)
++		int result = service.profile(profileImg, loginMember);
++
++		String message = null;
++
++		if (result > 0)
++			message = "변경 성공";
++		else
++			message = "변경 실패";
++
++		ra.addFlashAttribute("message", message);
++
++		return "redirect:profile";
++	}
+ 
+ }
+diff --git a/pawLife/src/main/java/com/project/pawlife/myPage/model/dto/myPage.java b/pawLife/src/main/java/com/project/pawlife/myPage/model/dto/myPage.java
+deleted file mode 100644
+index 7163d57..0000000
+--- a/pawLife/src/main/java/com/project/pawlife/myPage/model/dto/myPage.java
++++ /dev/null
+@@ -1,10 +0,0 @@
+-package com.project.pawlife.myPage.model.dto;
+-
+-import lombok.Getter;
+-import lombok.Setter;
+-
+-@Getter
+-@Setter
+-public class myPage {
+-
+-}
+diff --git a/pawLife/src/main/java/com/project/pawlife/myPage/model/mapper/MyPageMapper.java b/pawLife/src/main/java/com/project/pawlife/myPage/model/mapper/MyPageMapper.java
+index 51a3463..d4ec98d 100644
+--- a/pawLife/src/main/java/com/project/pawlife/myPage/model/mapper/MyPageMapper.java
++++ b/pawLife/src/main/java/com/project/pawlife/myPage/model/mapper/MyPageMapper.java
+@@ -4,6 +4,8 @@ import java.util.List;
+ 
+ import org.apache.ibatis.annotations.Mapper;
+ 
++import com.project.pawlife.adoption.model.dto.Adopt;
++import com.project.pawlife.member.model.dto.Member;
+ import com.project.pawlife.review.model.dto.Review;
+ 
+ @Mapper
+@@ -12,6 +14,25 @@ public interface MyPageMapper {
+ 	/** 로그인한 회원이 작성한 게시글 조회
+ 	 * @return
+ 	 */
+-	List<Review> selectView(int memberNo);
++	List<Review> selectReview(int memberNo);
++
++	/** 로그인한 회원이 작성한 댓글 조회
++	 * @param memberNo
++	 * @return
++	 */
++	List<Review> selectComment(int memberNo);
++	
++	/** 로그인한 회원이 북마크한 게시물 조회
++	 * @param memberNo
++	 * @return bookmarkList
++	 */
++	List<Adopt> selectBookMark(int memberNo);
++	
++	/** 프로필 이미지 변경
++	 * @param mem
++	 * @return result
++	 */
++	int profile(Member mem);
++
+ 
+ }
+diff --git a/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageService.java b/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageService.java
+index bff0c11..bee2ebb 100644
+--- a/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageService.java
++++ b/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageService.java
+@@ -1,15 +1,44 @@
+ package com.project.pawlife.myPage.model.service;
+ 
++import java.io.IOException;
+ import java.util.List;
+ 
++import org.springframework.web.multipart.MultipartFile;
++
++import com.project.pawlife.adoption.model.dto.Adopt;
++import com.project.pawlife.member.model.dto.Member;
+ import com.project.pawlife.review.model.dto.Review;
+ 
+ public interface MyPageService {
+ 
+-	/** 내가 쓴 후기 게시글 조회
++
++	/** 로그인한 회원이 쓴 후기 게시글 조회
+ 	 * @param memberNo 
+ 	 * @return reviewList
+ 	 */
+ 	List<Review> selectReview(int memberNo);
+ 
++	/** 로그인한 회원이 쓴 댓글 조회
++	 * @param memberNo
++	 * @return commentList
++	 */
++	List<Review> selectComment(int memberNo);
++	
++	/** 로그인한 회원이 북마크한 게시물 조회
++	 * @param memberNo
++	 * @return bookmarkList
++	 */
++	List<Adopt> selectBookMark(int memberNo);
++
++
++	/** 프로필 이미지 변경
++	 * @param profileImg
++	 * @param loginMember
++	 * @return
++	 * @throws IllegalStateException
++	 * @throws IOException
++	 */
++	int profile(MultipartFile profileImg, Member loginMember) throws IllegalStateException, IOException;
++
++
+ }
+diff --git a/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageServiceImpl.java b/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageServiceImpl.java
+index 93f2114..80085bf 100644
+--- a/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageServiceImpl.java
++++ b/pawLife/src/main/java/com/project/pawlife/myPage/model/service/MyPageServiceImpl.java
+@@ -1,11 +1,18 @@
+ package com.project.pawlife.myPage.model.service;
+ 
+ 
++import java.io.File;
++import java.io.IOException;
+ import java.util.List;
+ 
++import org.springframework.beans.factory.annotation.Value;
+ import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
++import org.springframework.web.multipart.MultipartFile;
+ 
++import com.project.pawlife.adoption.model.dto.Adopt;
++import com.project.pawlife.common.util.Utility;
++import com.project.pawlife.member.model.dto.Member;
+ import com.project.pawlife.myPage.model.mapper.MyPageMapper;
+ import com.project.pawlife.review.model.dto.Review;
+ 
+@@ -19,12 +26,91 @@ public class MyPageServiceImpl implements MyPageService{
+ 
+ 	
+ 	private final MyPageMapper mapper;
++	
++	@Value("${my.profile.web-path}")  // /myPage/profile/
++	private String profileWebPath;
++	
++	@Value("${my.profile.folder-path}") // D:/uploadFiles/profile/
++	private String profileFolderPath;
++	
++	
+ 
+ 	// 로그인한 회원이 작성한 게시글 리스트 조회
+ 	@Override
+ 	public List<Review> selectReview(int memberNo) {
+ 		
+-		return mapper.selectView(memberNo);
++		return mapper.selectReview(memberNo);
++	}
++	
++
++	// 로그인한 회원이 작성한 댓글 리스트 조회
++	@Override
++	public List<Review> selectComment(int memberNo) {
++		
++		return mapper.selectComment(memberNo);
+ 	}
++	
++	// 로그인한 회원이 북마크한 게시물 조회
++	@Override
++	public List<Adopt> selectBookMark(int memberNo) {
++	
++		return mapper.selectBookMark(memberNo);
++	}
++
++
++	// 프로필 이미지 변경
++	@Override
++	public int profile(MultipartFile profileImg, Member loginMember) throws IllegalStateException, IOException {
++		
++		// 수정할 경로
++		String updatePath = null;
++		
++		// 변경명 저장
++		String rename = null;
++		
++		//업로드한 이미지가 있을 경우
++		if(!profileImg.isEmpty()) {
++			
++			// updatePath 조합해줌
++			
++			 rename = Utility.fileRename(profileImg.getOriginalFilename());
++			
++			// /myPage/profile/변경된 파일명.jpg
++			updatePath = profileWebPath + rename;
++			
++			// 서비스 요청이 왔을 때 있으면 파일 경로 조합
++			// 없을 경우 null값이 mem에 세팅이 되어 mapper에 보내지고 update하면 됨 
++			//mapper로 보내기
++		}
++		
++		
++		//  수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체 만들기
++		Member mem =Member.builder()
++				             .memberNo(loginMember.getMemberNo())
++				             .profileImg(updatePath)
++		                     .build(); //-> 객체 만들어짐 -> 위에 경로를 만들어주자!
++		
++		// UPDATE 수행
++		int result = mapper.profile(mem); 
++		// 이미지가 null 없을 경우도 updatePath가 1로 업데이트 됨 -> 성공해버림 (if 사용해서 안전장치 추가)
++		
++		if(result > 0) { // 수정 성공 시
++			// 파일을 서버 지정된 폴더에 저장 
++			//profileImg.transferTo(new File(폴더 경로 + 변경명));
++		
++			// 프로필 이미지를 null로 수정한 경우를 제외
++			//-> 진짜 업로드한 이미지가 있을 경우에 서버에 저장한다는 코드
++			if(!profileImg.isEmpty()) {
++			profileImg.transferTo(new File( profileFolderPath + rename));
++			}
++			// 세션 회원 정보에서 프로필 이미지 경로를 
++			// 업데이트한 경로로 변경
++			// 없는 경우 null이 들어감
++		    loginMember.setProfileImg(updatePath);
++		}
++		return result;
++	}
++
++
+ 
+ }
+diff --git a/pawLife/src/main/resources/mappers/myPage-mapper.xml b/pawLife/src/main/resources/mappers/myPage-mapper.xml
+index ba69385..3d72304 100644
+--- a/pawLife/src/main/resources/mappers/myPage-mapper.xml
++++ b/pawLife/src/main/resources/mappers/myPage-mapper.xml
+@@ -5,10 +5,39 @@
+   
+   
+   <!-- 로그인한 회원이 작성한 게시글 조회 -->
+-    <select id="selectView" resultType="review">
+-     SELECT REVIEW_TITLE, READ_COUNT, REVIEW_CONTENT, REVIEW_WRITE_DATE
++    <select id="selectReview" resultType="review">
++     SELECT REVIEW_TITLE, READ_COUNT,
++       TO_CHAR(REVIEW_WRITE_DATE, 'YYYY-MM-DD DAY') AS "REVIEW_WRITE_DATE"
++     
+      FROM "REVIEW"
+      WHERE MEMBER_No=#{memberNo}
+     </select>
++    
++     <!-- 로그인한 회원이 작성한 댓글 조회 -->
++    <select id="selectComment" parameterType="int" resultType="review">
++    SELECT C.REVIEW_NO, C.MEMBER_NO, R.REVIEW_TITLE, C.COMMENT_CONTENT, 
++	    TO_CHAR(C.COMMENT_WRITE_DATE, 'YYYY-MM-DD DAY') AS "COMMENT_WRITE_DATE"
++	    FROM "REVIEW" R
++	   JOIN "COMMENT" C ON R.REVIEW_NO = C.REVIEW_NO
++    	WHERE C.COMMENT_NO = (
++	    SELECT COMMENT_NO 
++	    FROM "COMMENT"
++	    WHERE MEMBER_NO = #{memberNo})
++
++    </select>
++    
++    
++    <!-- 로그인한 회원이 북마크한 게시물 조회 -->
++    <select id="selectBookMark" resultType="adopt">
++       
++    </select>
++    
++    <!-- 프로필 이미지 변경 -->
++    <update id="profile">
++      UPDATE "MEMBER" SET
++      PROFILE_IMG = #{profileImg}
++      WHERE MEMBER_NO =#{memberNo}
++    </update>
++    
+   
+ </mapper>
+diff --git a/pawLife/src/main/resources/static/js/myPage/myPage.js b/pawLife/src/main/resources/static/js/myPage/myPage.js
+index 1f85294..ef9ca8b 100644
+--- a/pawLife/src/main/resources/static/js/myPage/myPage.js
++++ b/pawLife/src/main/resources/static/js/myPage/myPage.js
+@@ -61,13 +61,13 @@ const selectMyReviewBoard = () =>{
+      const table = document.createElement("table");
+      table.id='reviewbox'
+      const tbody = document.createElement("tbody");
+-    tbody.id='reviewList'
++     tbody.id='reviewList'
+       const thead=document.createElement("thead");
+       const tr = document.createElement("tr");
+ 
+       
+       /* 테이블 헤더 만들기 */
+-      const headers=["게시글 제목", "조회수","게시글 수정일 ","게시글 작성일"];
++      const headers=["게시글 제목", "조회수","게시글 작성일"];
+       for(let head of headers){
+         const th = document.createElement("th");
+         th.innerText = head;
+@@ -81,8 +81,8 @@ const selectMyReviewBoard = () =>{
+     for(let review of reviewList){
+    
+ 
+-      const arr = ['reviewTitle', 'readCount', 'reviewUpdateDate', 'reviewWriteDate'];
+-      
++      const arr = ['reviewTitle', 'readCount', 'reviewWriteDate'];
++      const tr= document.createElement("tr");
+ 
+       for(let key of arr){
+         const td = document.createElement("td");
+@@ -94,16 +94,24 @@ const selectMyReviewBoard = () =>{
+           a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
+           td.append(a);
+         
++         }else{
++  
++          td.innerText = review[key];
+          }
+ 
+-        td.innerHtml = review[key];
+         tr.append(td);
+       }
+         // tbody의 자식으로 tr( 한 줄 ) 추가
+         tbody.append(tr);
+-        table.append(tbody);
++        
+      }
++
++     table.append(tbody);
+      profilebox.append(table);
++     
++
++     
++   
+   });
+ }
+ 
+@@ -139,7 +147,7 @@ const selectMyCommentBoard = () =>{
+  
+   fetch("/myPage/selectComment")
+ 
+-  .then(response => response.json())
++  .then(resp => resp.json())
+ 
+   .then(commentList=>{
+      // list를 담아오자
+@@ -153,13 +161,13 @@ const selectMyCommentBoard = () =>{
+       // HTML 화면에 내용이 없다는 메시지를 표시하는 코드 추가
+ 
+      // 기존 요소 지우기
+-     const messageDiv = document.getElementById("noCommentMessage");
+-     if (messageDiv) {
+-         messageDiv.innerHTML = ""; // 내용 지우기
++     const message = document.getElementById("noCommentMessage");
++     if (message) {
++         message.innerHTML = ""; // 내용 지우기
+      } else {
+          // 내용 설정
+      
+-     messageDiv.innerHTML = "아직 작성된 댓글이 없습니다";
++     message.innerHTML = "아직 작성된 댓글이 없습니다";
+      }
+  
+    
+@@ -170,49 +178,56 @@ const selectMyCommentBoard = () =>{
+       // 댓글을 화면에 표시하는 코드 추가
+ 
+       const table = document.createElement("table");
++      table.id="commentBox"
+       const tbody = document.createElement("tbody");
+-      tbody.id='commentList'
+-        const thead=document.createElement("thead");
++      tbody.id="commentList"
++      const thead=document.createElement("thead");
+       const tr = document.createElement("tr");
+ 
+             
+       /* 테이블 헤더 만들기 */
+-      const headers=["게시글 제목", "조회수","댓글","게시글 작성일"];
++      const headers=["게시글 제목","댓글","댓글 작성일"];
+       for(let head of headers){
++        
+         const th = document.createElement("th");
+         th.innerText = head;
+         tr.append(th);
++       
+       }
+       
+       thead.append(tr);
+ 
+       table.append(thead);
+    
+-    for(let comment of commentList){
++    for(let com of commentList){
+    
+ 
+       const arr = ['reviewTitle', 'commentContent', 'commentWriteDate'];
+-      
++      const tr = document.createElement("tr"); 
+ 
+       for(let key of arr){
+         const td = document.createElement("td");
+-
++        
+         // 제목인 경우
+          if(key== 'reviewTitle'){
+           const a= document.createElement("a");
+-          a.innerText = comment[key]; // 제목을 a 태그 내용으로 대입
+-          a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
++          a.innerText = com[key]; // 제목을 a 태그 내용으로 대입
++          a.href="/review/reviewDetail?reviewNo=" + com.commentNo;
+           td.append(a);
+         
++         }else{
++  
++          td.innerText = com[key];
+          }
+ 
+-        td.innerHtml = comment[key];
+         tr.append(td);
+       }
+         // tbody의 자식으로 tr( 한 줄 ) 추가
+         tbody.append(tr);
+-        table.append(tbody);
++        
+      }
++
++     table.append(tbody);
+      profilebox.append(table);
+      
+ 
+@@ -224,7 +239,6 @@ const selectMyCommentBoard = () =>{
+   });
+ }
+ 
+-commentListBtn
+ 
+ // button 클릭시 작동하게 하기
+ // 버튼 클릭시 profileContainer 내부 비우고 위에서 만든 전체 조회 함수 호출
+@@ -242,72 +256,148 @@ commentListBtn.addEventListener('click',()=>{
+ });
+ 
+ 
+-/* 첫 화면에서 프로필 페이지 바로 ajax로 연결 + 프로필 수정 */
++/* 내가 북마크한 게시물 비동기로 조회하기 */
+ 
+-/* 프로필 첫 화면 만들기 */
++const selectMyBookMark=()=>{
+ 
+-// 함수 만들기
+-const selectMyProfile = () =>{
++  fetch("/myPage/selectBookMark")
+ 
+- 
+-  fetch("/myPage/selectProfile")
++  .then(resp => resp.json())
++
++  .then(bookmarkList =>{
++
++    console.log(bookmarkList);
++
++    profilebox.innerHTML="";
+ 
+-  .then(response => response.json())
+ 
+-  .then(profileList=>{
+-     // list를 담아오자
+     
+-     // list 확인
+-     console.log(profileList);
++    if (bookmarkList == null || bookmarkList.length === 0) {
++      // bookmarkList null이거나 빈 배열인 경우
++      // HTML 화면에 내용이 없다는 메시지를 표시하는 코드 추가
+ 
++     // 기존 요소 지우기
++     const message = document.getElementById("noCommentMessage");
++     if (message) {
++         message.innerHTML = ""; // 내용 지우기
++     } else {
++         // 내용 설정
++     
++     message.innerHTML = "아직 북마크한 게시글이 없습니다";
++     }
++ 
+    
+-     profilebox.innerHTML =""; // 기존 내용 지우기
+ 
+-     const table = document.createElement("table");
+-     table.id='reviewbox'
+-     const tbody = document.createElement("tbody");
+-    tbody.id='reviewList'
++
++  } else {
++      // bookmarkList 값이 있는 경우
++      // 댓글을 화면에 표시하는 코드 추가
++
++      const table = document.createElement("table");
++      table.id="bookMarkBox"
++      const tbody = document.createElement("tbody");
++      tbody.id="bookMarkList"
+       const thead=document.createElement("thead");
+       const tr = document.createElement("tr");
+ 
+-      
++            
+       /* 테이블 헤더 만들기 */
+-      const headers=["게시글 제목", "조회수","게시글 수정일 ","게시글 작성일"];
++      const headers=["게시글 제목","입양 상태"];
+       for(let head of headers){
++        
+         const th = document.createElement("th");
+         th.innerText = head;
+         tr.append(th);
++       
+       }
+       
+       thead.append(tr);
+ 
+       table.append(thead);
+    
+-    for(let review of reviewList){
++    for(let mark of bookmarkList){
+    
+ 
+-      const arr = ['reviewTitle', 'readCount', 'reviewUpdateDate', 'reviewWriteDate'];
+-      
++      const arr = ['reviewTitle', 'bookMarkCheck'];
++      const tr = document.createElement("tr"); 
+ 
+       for(let key of arr){
+         const td = document.createElement("td");
+-
++        
+         // 제목인 경우
+          if(key== 'reviewTitle'){
+           const a= document.createElement("a");
+-          a.innerText = review[key]; // 제목을 a 태그 내용으로 대입
+-          a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
++          a.innerText = mark[key]; // 제목을 a 태그 내용으로 대입
++          a.href="/adoption/adoptionDetail?adoptNo=" + mark.adoptNo;
+           td.append(a);
+         
++         }else{
++  
++          td.innerText = mark[key];
+          }
+ 
+-        td.innerHtml = review[key];
+         tr.append(td);
+       }
+         // tbody의 자식으로 tr( 한 줄 ) 추가
+         tbody.append(tr);
+-        table.append(tbody);
++        
+      }
++
++     table.append(tbody);
++     profilebox.append(table);
++     
++
++
++
++  }
++
++
++  });
++
++
++}
++
++profileListBtn.addEventListener('click',()=>{
++ 
++   selectMyBookMark();
++
++
++});
++
++
++
++/* 첫 화면에서 프로필 페이지 바로 ajax로 연결 + 프로필 수정 */
++
++/* 프로필 첫 화면 만들기 */
++
++// 함수 만들기
++const selectMyProfile = () =>{
++
++ 
++  fetch("/myPage/selectProfile")
++
++  .then(response => response.json())
++
++  .then(profileList=>{
++     // list를 담아오자
++    
++     // list 확인
++     console.log(profileList);
++
++   
++     profilebox.innerHTML =""; // 기존 내용 지우기
++
++     const table = document.createElement("table");
++    
++     const tbody = document.createElement("tbody");
++    
++      const thead=document.createElement("thead");
++      const tr = document.createElement("tr");
++
++      
++      /* 테이블 헤더 만들기 */
++     
++     
+      profilebox.append(table);
+   });
+ }
+diff --git a/pawLife/src/main/resources/templates/myPage/myPage-first.html b/pawLife/src/main/resources/templates/myPage/myPage-first.html
+index 273f286..a9abd84 100644
+--- a/pawLife/src/main/resources/templates/myPage/myPage-first.html
++++ b/pawLife/src/main/resources/templates/myPage/myPage-first.html
+@@ -64,11 +64,11 @@
+           <form action="profile" method="POST"
+           name="profileForm" id="profileForm" enctype="multipart/form-data">
+           
+-             
++            <!-- session.loginMember.profileImg ?:  -->
+               <div class="profileImg-area">
+ 
+                 <img th:with="user=#{user.default.image}" 
+-                th:src="${session.loginMember.profileImg ?: user }" 
++                th:src="${user }" 
+                 id="profileImg">
+ 
+               </div>
+@@ -329,11 +329,7 @@
+     <th:block th:replace="~{common/footer}"></th:block>
+ 
+     
+-    <script th:inline="javascript">
+-      const message =  /*[[${message}]]*/ "전달 받은 message";
+     
+-      if(message != null) alert(message);
+-    </script>
+ 
+ 
+         <!-- 타임리프 코드를 JS 코드로 해석해줌 -->
+diff --git a/pawLife/src/main/resources/templates/myPage/myPage-myBookMark.html b/pawLife/src/main/resources/templates/myPage/myPage-myBookMark.html
+index 6abfbae..e0d09e5 100644
+--- a/pawLife/src/main/resources/templates/myPage/myPage-myBookMark.html
++++ b/pawLife/src/main/resources/templates/myPage/myPage-myBookMark.html
+@@ -15,6 +15,7 @@
+           <thead>
+             <tr>
+               <th>제목</th>
++              
+               <th>입양 완료</th>  
+             </tr>
+ 
+-- 
+2.43.0.windows.1
+
