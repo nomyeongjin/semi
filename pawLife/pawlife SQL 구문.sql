@@ -239,6 +239,14 @@ ALTER TABLE "COMMENT" ADD
 CONSTRAINT "COMMENT_DEL_FL"
 CHECK("COMMENT_DEL_FL" IN ('Y', 'N'));
 
+--BOOKMARK 테이블 북마크 체크 여부 컬럼 추가
+ALTER TABLE "BOOKMARK" ADD(BOOKMARK_CHECK CHAR(1) DEFAULT 'N');
+
+-- 게시글 북마크 여부
+ALTER TABLE "BOOKMARK" ADD
+CONSTRAINT "BOOKMARK_CHECK"
+CHECK("BOOKMARK_CHECK" IN ('Y', 'N'));
+
 ----------------------------------------------------------------------------------------------------------------
 
 /* 샘플 데이터 삽입 */
@@ -345,6 +353,7 @@ SELECT * FROM REVIEW;
 INSERT INTO "REVIEW"
 VALUES(SEQ_REVIEW_NO.NEXTVAL, '게시글 테스트', '게시글 내용',
 			 DEFAULT, DEFAULT, DEFAULT, DEFAULT, 2, 2);
+
 
 
 
