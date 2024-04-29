@@ -23,4 +23,10 @@ public interface AdoptionService {
 	 */
 	Adopt selectOneAdopt(Map<String, Integer> map);
 
+	/** 게시글 북마크 체크/ 해제
+	 * @param map
+	 * @return result
+	 */
+	int bookCheck(Map<String, Integer> map);
+
 }
