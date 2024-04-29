@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.pawlife.adoption.model.dto.Adopt;
 import com.project.pawlife.adoption.model.mapper.AdoptionMapper;
+import com.project.pawlife.common.exception.AdoptInsertException;
 import com.project.pawlife.common.util.Pagination;
 
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 public class AdoptionServiceImpl implements AdoptionService {
 
 	
-	@Value("${my.profile.web-path}")
-	private String profileWebPath; // /myPage/profile/
+	@Value("${my.adopt.web-path}")
+	private String adoptWebPath; // /myPage/profile/
 
-	@Value("${my.profile.folder-path}")
-	private String profileFolderPath;
+	@Value("${my.adopt.folder-path}")
+	private String adoptFolderPath;
 	
 	@Autowired
 	private final AdoptionMapper mapper;
@@ -56,7 +57,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 			rename = com.project.pawlife.common.util.Utility.fileRename(thumnailImg.getOriginalFilename());
 
 			// /myPage/profile/변경된파일명.jpg
-			updatePath = profileWebPath+rename;
+			updatePath = adoptWebPath+rename;
 			
 			inputAdopt.setThumnail(updatePath);
 			inputAdopt.setMemberNo(memberNo);
@@ -67,10 +68,10 @@ public class AdoptionServiceImpl implements AdoptionService {
 		
 		if(result > 0) {
 			try {
-				thumnailImg.transferTo(new File(profileFolderPath + rename));
+				thumnailImg.transferTo(new File(adoptFolderPath + rename));
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new RuntimeException("고쳐요");
+				throw new AdoptInsertException("입양 게시글 이미지 삽입 중 예외 발생");
 			}
 		}
 		
