@@ -13,8 +13,8 @@ bookmarkCheck.addEventListener("click", e=>{
 
     const obj ={
      "memberNo" : loginMemberNo,
-     "boardNo"  : boardNo,
-     "bookMark" : bookMark
+     "adoptNo"  : adoptNo,
+     "bookmark" : bookmark
 
     };
 
@@ -37,7 +37,7 @@ bookmarkCheck.addEventListener("click", e=>{
         }
 
         // bookMark 값 0<->1 변환 ( 클릭될 때 마다 insert/ delete 동작 번갈아 수행)
-        bookMark = bookMark == 0? 1: 0;
+        bookmark = bookmark == 0? 1: 0;
 
         e.target.classList.toggle("fa-regular");
         e.target.classList.toggle("fa-solid");
