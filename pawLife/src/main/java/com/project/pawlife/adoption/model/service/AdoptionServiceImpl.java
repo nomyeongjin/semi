@@ -17,6 +17,7 @@ import com.project.pawlife.adoption.model.dto.Adopt;
 import com.project.pawlife.adoption.model.mapper.AdoptionMapper;
 import com.project.pawlife.common.exception.AdoptInsertException;
 import com.project.pawlife.common.util.Pagination;
+import com.project.pawlife.common.util.Utility;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 			// updatePath 조합
 			
 			// 파일명 조합
-			rename = com.project.pawlife.common.util.Utility.fileRename(thumnailImg.getOriginalFilename());
+			rename = Utility.fileRename(thumnailImg.getOriginalFilename());
 
 			// /myPage/profile/변경된파일명.jpg
 			updatePath = adoptWebPath+rename;
