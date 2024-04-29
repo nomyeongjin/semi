@@ -61,13 +61,13 @@ const selectMyReviewBoard = () =>{
      const table = document.createElement("table");
      table.id='reviewbox'
      const tbody = document.createElement("tbody");
-    tbody.id='reviewList'
+     tbody.id='reviewList'
       const thead=document.createElement("thead");
       const tr = document.createElement("tr");
 
       
       /* 테이블 헤더 만들기 */
-      const headers=["게시글 제목", "조회수","게시글 수정일 ","게시글 작성일"];
+      const headers=["게시글 제목", "조회수","게시글 작성일"];
       for(let head of headers){
         const th = document.createElement("th");
         th.innerText = head;
@@ -81,8 +81,8 @@ const selectMyReviewBoard = () =>{
     for(let review of reviewList){
    
 
-      const arr = ['reviewTitle', 'readCount', 'reviewUpdateDate', 'reviewWriteDate'];
-      
+      const arr = ['reviewTitle', 'readCount', 'reviewWriteDate'];
+      const tr= document.createElement("tr");
 
       for(let key of arr){
         const td = document.createElement("td");
@@ -94,16 +94,24 @@ const selectMyReviewBoard = () =>{
           a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
           td.append(a);
         
+         }else{
+  
+          td.innerText = review[key];
          }
 
-        td.innerHtml = review[key];
         tr.append(td);
       }
         // tbody의 자식으로 tr( 한 줄 ) 추가
         tbody.append(tr);
-        table.append(tbody);
+        
      }
+
+     table.append(tbody);
      profilebox.append(table);
+     
+
+     
+   
   });
 }
 
@@ -139,7 +147,7 @@ const selectMyCommentBoard = () =>{
  
   fetch("/myPage/selectComment")
 
-  .then(response => response.json())
+  .then(resp => resp.json())
 
   .then(commentList=>{
      // list를 담아오자
@@ -153,13 +161,13 @@ const selectMyCommentBoard = () =>{
       // HTML 화면에 내용이 없다는 메시지를 표시하는 코드 추가
 
      // 기존 요소 지우기
-     const messageDiv = document.getElementById("noCommentMessage");
-     if (messageDiv) {
-         messageDiv.innerHTML = ""; // 내용 지우기
+     const message = document.getElementById("noCommentMessage");
+     if (message) {
+         message.innerHTML = ""; // 내용 지우기
      } else {
          // 내용 설정
      
-     messageDiv.innerHTML = "아직 작성된 댓글이 없습니다";
+     message.innerHTML = "아직 작성된 댓글이 없습니다";
      }
  
    
@@ -170,49 +178,56 @@ const selectMyCommentBoard = () =>{
       // 댓글을 화면에 표시하는 코드 추가
 
       const table = document.createElement("table");
+      table.id="commentBox"
       const tbody = document.createElement("tbody");
-      tbody.id='commentList'
-        const thead=document.createElement("thead");
+      tbody.id="commentList"
+      const thead=document.createElement("thead");
       const tr = document.createElement("tr");
 
             
       /* 테이블 헤더 만들기 */
-      const headers=["게시글 제목", "조회수","댓글","게시글 작성일"];
+      const headers=["게시글 제목","댓글","댓글 작성일"];
       for(let head of headers){
+        
         const th = document.createElement("th");
         th.innerText = head;
         tr.append(th);
+       
       }
       
       thead.append(tr);
 
       table.append(thead);
    
-    for(let comment of commentList){
+    for(let com of commentList){
    
 
       const arr = ['reviewTitle', 'commentContent', 'commentWriteDate'];
-      
+      const tr = document.createElement("tr"); 
 
       for(let key of arr){
         const td = document.createElement("td");
-
+        
         // 제목인 경우
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
-          a.innerText = comment[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
+          a.innerText = com[key]; // 제목을 a 태그 내용으로 대입
+          a.href="/review/reviewDetail?reviewNo=" + com.commentNo;
           td.append(a);
         
+         }else{
+  
+          td.innerText = com[key];
          }
 
-        td.innerHtml = comment[key];
         tr.append(td);
       }
         // tbody의 자식으로 tr( 한 줄 ) 추가
         tbody.append(tr);
-        table.append(tbody);
+        
      }
+
+     table.append(tbody);
      profilebox.append(table);
      
 
@@ -224,7 +239,6 @@ const selectMyCommentBoard = () =>{
   });
 }
 
-commentListBtn
 
 // button 클릭시 작동하게 하기
 // 버튼 클릭시 profileContainer 내부 비우고 위에서 만든 전체 조회 함수 호출
@@ -240,6 +254,116 @@ commentListBtn.addEventListener('click',()=>{
 
 
 });
+
+
+/* 내가 북마크한 게시물 비동기로 조회하기 */
+
+const selectMyBookMark=()=>{
+
+  fetch("/myPage/selectBookMark")
+
+  .then(resp => resp.json())
+
+  .then(bookmarkList =>{
+
+    console.log(bookmarkList);
+
+    profilebox.innerHTML="";
+
+
+    
+    if (bookmarkList == null || bookmarkList.length === 0) {
+      // bookmarkList null이거나 빈 배열인 경우
+      // HTML 화면에 내용이 없다는 메시지를 표시하는 코드 추가
+
+     // 기존 요소 지우기
+     const message = document.getElementById("noCommentMessage");
+     if (message) {
+         message.innerHTML = ""; // 내용 지우기
+     } else {
+         // 내용 설정
+     
+     message.innerHTML = "아직 북마크한 게시글이 없습니다";
+     }
+ 
+   
+
+
+  } else {
+      // bookmarkList 값이 있는 경우
+      // 댓글을 화면에 표시하는 코드 추가
+
+      const table = document.createElement("table");
+      table.id="bookMarkBox"
+      const tbody = document.createElement("tbody");
+      tbody.id="bookMarkList"
+      const thead=document.createElement("thead");
+      const tr = document.createElement("tr");
+
+            
+      /* 테이블 헤더 만들기 */
+      const headers=["게시글 제목","입양 상태"];
+      for(let head of headers){
+        
+        const th = document.createElement("th");
+        th.innerText = head;
+        tr.append(th);
+       
+      }
+      
+      thead.append(tr);
+
+      table.append(thead);
+   
+    for(let mark of bookmarkList){
+   
+
+      const arr = ['reviewTitle', 'bookMarkCheck'];
+      const tr = document.createElement("tr"); 
+
+      for(let key of arr){
+        const td = document.createElement("td");
+        
+        // 제목인 경우
+         if(key== 'reviewTitle'){
+          const a= document.createElement("a");
+          a.innerText = mark[key]; // 제목을 a 태그 내용으로 대입
+          a.href="/adoption/adoptionDetail?adoptNo=" + mark.adoptNo;
+          td.append(a);
+        
+         }else{
+  
+          td.innerText = mark[key];
+         }
+
+        tr.append(td);
+      }
+        // tbody의 자식으로 tr( 한 줄 ) 추가
+        tbody.append(tr);
+        
+     }
+
+     table.append(tbody);
+     profilebox.append(table);
+     
+
+
+
+  }
+
+
+  });
+
+
+}
+
+profileListBtn.addEventListener('click',()=>{
+ 
+   selectMyBookMark();
+
+
+});
+
 
 
 /* 첫 화면에서 프로필 페이지 바로 ajax로 연결 + 프로필 수정 */
@@ -264,50 +388,16 @@ const selectMyProfile = () =>{
      profilebox.innerHTML =""; // 기존 내용 지우기
 
      const table = document.createElement("table");
-     table.id='reviewbox'
+    
      const tbody = document.createElement("tbody");
-    tbody.id='reviewList'
+    
       const thead=document.createElement("thead");
       const tr = document.createElement("tr");
 
       
       /* 테이블 헤더 만들기 */
-      const headers=["게시글 제목", "조회수","게시글 수정일 ","게시글 작성일"];
-      for(let head of headers){
-        const th = document.createElement("th");
-        th.innerText = head;
-        tr.append(th);
-      }
-      
-      thead.append(tr);
-
-      table.append(thead);
-   
-    for(let review of reviewList){
-   
-
-      const arr = ['reviewTitle', 'readCount', 'reviewUpdateDate', 'reviewWriteDate'];
-      
-
-      for(let key of arr){
-        const td = document.createElement("td");
-
-        // 제목인 경우
-         if(key== 'reviewTitle'){
-          const a= document.createElement("a");
-          a.innerText = review[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
-          td.append(a);
-        
-         }
-
-        td.innerHtml = review[key];
-        tr.append(td);
-      }
-        // tbody의 자식으로 tr( 한 줄 ) 추가
-        tbody.append(tr);
-        table.append(tbody);
-     }
+     
+     
      profilebox.append(table);
   });
 }
