@@ -64,11 +64,11 @@
           <form action="profile" method="POST"
           name="profileForm" id="profileForm" enctype="multipart/form-data">
           
-             
+            <!-- session.loginMember.profileImg ?:  -->
               <div class="profileImg-area">
 
                 <img th:with="user=#{user.default.image}" 
-                th:src="${session.loginMember.profileImg ?: user }" 
+                th:src="${user }" 
                 id="profileImg">
 
               </div>
@@ -329,11 +329,7 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     
-    <script th:inline="javascript">
-      const message =  /*[[${message}]]*/ "전달 받은 message";
     
-      if(message != null) alert(message);
-    </script>
 
 
         <!-- 타임리프 코드를 JS 코드로 해석해줌 -->
