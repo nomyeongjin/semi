@@ -9,7 +9,7 @@
             <div class="login-box">
                 <a href="/myPage/first">
                     <img th:with="user=#{user.default.image}" 
-                    th:src="${ session.loginMember.profileImg ?:user}"  
+                    th:src="${ user}"  
                       id="memberProfile"
                       alt="프로필 이미지">
                 </a>
