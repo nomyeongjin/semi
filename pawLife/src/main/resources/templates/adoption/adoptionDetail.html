@@ -41,7 +41,7 @@
                 </div>
                 <div class="bookmark">
                         <i class="fa-regular fa-bookmark" id="bookmarkCheck"
-                        th:classappend="*{bookMark == 1} ? fa-solid : fa-regular"></i>
+                        th:classappend="*{bookmark == 1} ? fa-solid : fa-regular"></i>
                          
                 </div>
             </div>
@@ -112,7 +112,7 @@
        const adoptNo = /*[[${adopt.adoptNo}]]*/"입양 게시글 번호";
 
         /* 현재 게시글 좋아요 여부(boardLike)를 전역 변수로 저장 */
-        let bookMark =/*[[${adopt.bookMark}]]*/ "북마크 여부";
+        let bookmark =/*[[${adopt.bookmark}]]*/ "북마크 여부";
 
 
 

@@ -133,7 +133,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 		
 		int result =0;
 		
-	   if(map.get("bookMark") == 1) { // bookmarkcheck 테이블에 delete
+	   if(map.get("bookmark") == 1) { // bookmarkcheck 테이블에 delete
 			
 			result = mapper.deleteBookCheck(map);
 	
