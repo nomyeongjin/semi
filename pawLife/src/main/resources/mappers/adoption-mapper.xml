@@ -84,7 +84,11 @@
  	SET
  	ADOPT_TITLE = #{adoptTitle},
  	ADOPT_CONTENT = #{adoptContent},
- 	THUMNAIL = #{thumnail},
+ 	
+ 	<if test='thumnail != "none"'>
+ 		THUMNAIL = #{thumnail},
+ 	</if>
+ 	
  	ADOPT_NAME = #{adoptName},
  	ADOPT_AGE = #{adoptAge},
  	ADOPT_TYPE = #{adoptType},

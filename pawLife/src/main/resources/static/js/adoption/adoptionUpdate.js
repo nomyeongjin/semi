@@ -1,3 +1,5 @@
+
+
 /* 썸네일 이미지 추가 변경 삭제 */
 // -1 : 초기 상태(변화 없음)
 // 0  : 프로필 이미지 삭제
@@ -22,16 +24,6 @@ const changeImageFn = e=>{
     // 업로드 가능한 파일 최대 크기 지정하려 필터링
     const maxSize = 1024*1024*5; // 5MB == 1024KB * 5 == 1024B * 1024 *5
 
-    console.log("e.target",e.target); // input
-    console.log("e.target.value",e.target.value); // 변경된 값(파일명)
-
-    // 선택된 파일에 대한 정보가 담긴 배열 반환
-    // -> 왜 배열? multiple 옵션에 대한 대비
-    console.log("e.target.files",e.target.files); 
-
-    // 업로드된 파일이 1개 있으면 files[0]에 저장됨
-    // 업로드된 파일이 없으면 files[0] == undefined
-    console.log("e.target.files[0]",e.target.files[0]);
 
     const file = e.target.files[0];
 
@@ -162,14 +154,9 @@ adoptUpdateForm.addEventListener("submit",e=>{
 
     let flag = true;
 
-        // 기존 프로필 이미지가 없다가 새 이미지가 선택된 경우
-        if(thumnailImage==null && statusCheck==1) flag = false;
-
-        // 기존 프로필 이미지가 있다가 삭제한 경우
-        if(thumnailImage != null && statusCheck==0) flag = false;
-        
-        // 기존 프로필 이미지가 있다가 삭제한 경우
-        if(thumnailImage != null && statusCheck==1) flag = false;
+        // 기존 프로필 이미지가 있고 변경하지 않은 경우
+        if(thumnailImage != null && statusCheck==-1) flag = false;
+        if(thumnailImage != null && statusCheck== 1) flag = false;
 
 
         if(flag){// flag 값이 true인 경우
@@ -180,6 +167,8 @@ adoptUpdateForm.addEventListener("submit",e=>{
 
     /* 유효성 검사 */
     
+    oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
+
     const title = document.querySelector("#adoptTitle");
    const content = document.querySelector("#adoptContent");
    const infoName = document.querySelector("#adoptName");
