@@ -49,19 +49,27 @@
 	 	  WHERE MEMBER_NO = #{memberNo}
 	 	</select>
 	 	
-	 	 	<!-- 비밀번호 수정 -->
-	 	<update id="changeMemberPw">
-		 	UPDATE "MEMBER" SET
-		 	MEMBER_PW = #{encPw}
-		 	WHERE MEMBER_NO = #{memberNo}
-	 	</update>
-    
+ 	 	<!-- 비밀번호 수정 -->
+ 	<update id="changeMemberPw">
+	 	UPDATE "MEMBER" SET
+	 	MEMBER_PW = #{encPw}
+	 	WHERE MEMBER_NO = #{memberNo}
+ 	</update>
+   
     <!-- 프로필 이미지 변경 -->
     <update id="profile">
       UPDATE "MEMBER" SET
       PROFILE_IMG = #{profileImg}
       WHERE MEMBER_NO =#{memberNo}
     </update>
+    
+    
+    <!-- 회원 탈퇴 -->
+      <update id="deleteMember">
+        UPDATE "MEMBER" SET
+        MEMBER_DEL_FL ='Y'
+        WHERE MEMBER_NO = #{memberNo}
+      </update>
     
   
 </mapper>

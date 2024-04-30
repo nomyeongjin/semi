@@ -53,5 +53,11 @@ public interface MyPageMapper {
 	 */
 	int changeMemberPw(Map<String, Object> map);
 
+	/** 회원 탈퇴
+	 * @param memberNo
+	 * @return
+	 */
+	int deleteMember(int memberNo);
+
 
 }
