@@ -169,7 +169,7 @@ adoptUpdateForm.addEventListener("submit",e=>{
         if(thumnailImage != null && statusCheck==0) flag = false;
         
         // 기존 프로필 이미지가 있다가 삭제한 경우
-        // if(thumnailImage != null && statusCheck==1) flag = false;
+        if(thumnailImage != null && statusCheck==1) flag = false;
 
 
         if(flag){// flag 값이 true인 경우
