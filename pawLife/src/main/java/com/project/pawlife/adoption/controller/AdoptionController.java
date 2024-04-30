@@ -62,10 +62,16 @@ public class AdoptionController {
 	public String adoptionDetail(
 			@PathVariable("adoptNo") int adoptNo,
 			Model model,
-			RedirectAttributes ra
+			RedirectAttributes ra,
+			@SessionAttribute(value="loginMember", required = false) Member loginMember
 			) {
 		
 		Map<String, Integer> map = new HashMap<>();
+		if(loginMember!=null) {
+			int memberNo = loginMember.getMemberNo();
+			map.put("memberNo",memberNo);
+		}
+		
 		map.put("adoptNo",adoptNo);
 		
 		
@@ -112,12 +118,12 @@ public class AdoptionController {
 			Adopt inputAdopt,
 			@RequestParam("thumnailImg") MultipartFile thumnailImg,
 			@RequestParam("adoptContent") String adoptContent,
-			@SessionAttribute("loginMember") Member loginMember
+			@SessionAttribute(value="loginMember", required = false) Member loginMember
 			) {
 
 
-		int memberNo = loginMember.getMemberNo(); 
 		
+		int memberNo = loginMember.getMemberNo(); 
 		int result = service.adoptionInsert(inputAdopt,thumnailImg,memberNo);
 		
 		
