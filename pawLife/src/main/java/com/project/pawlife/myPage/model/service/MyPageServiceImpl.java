@@ -156,6 +156,16 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 
+	// 회원 탈퇴
+	@Override
+	public int deleteMember(int memberNo) {
+		
+		int result = mapper.deleteMember(memberNo);
+		
+		return result;
+	}
+
+
 
 
 

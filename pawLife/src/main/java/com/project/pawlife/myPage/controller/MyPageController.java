@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -173,6 +174,33 @@ public class MyPageController {
 		
 		 ra.addFlashAttribute("message",message);
 		 return "redirect:" +path;
+   }
+   
+   
+   @PostMapping("memberdel")
+   public String memberDel(
+		   @SessionAttribute("loginMember") Member loginMember,
+		   SessionStatus status,			
+			 RedirectAttributes ra
+		   ) {
+	   
+	   int memberNo = loginMember.getMemberNo();
+	   int result = service.deleteMember(memberNo);
+	   
+	   String path = null;
+	   String message = null;
+	   
+	   if(result > 0) {
+		   message = "탈퇴 되었습니다";
+		   status.setComplete();
+		   path="/";
+	   }else {
+		   message = "탈퇴 실패하였습니다";
+		   path = "/myPage/myPage-first";
+	   }
+	   
+	   ra.addFlashAttribute("message",message);
+	   return "redirect:" + path;
    }
    
    

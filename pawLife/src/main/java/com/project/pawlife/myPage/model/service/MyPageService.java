@@ -38,6 +38,14 @@ public interface MyPageService {
 	int profileUpdate(Member inputMember);
 
 
+	/** 비밀번호 수정
+	 * @param memberNo
+	 * @param currentPw
+	 * @param newPw
+	 * @return result
+	 */
+	int changeMemberPw(int memberNo, String currentPw, String newPw);
+
 
 	/** 프로필 이미지 변경
 	 * @param profileImg
@@ -48,13 +56,12 @@ public interface MyPageService {
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws IllegalStateException, IOException;
 
-	/**
+	
+	/** 회원 탈퇴
 	 * @param memberNo
-	 * @param currentPw
-	 * @param newPw
-	 * @return result
+	 * @return
 	 */
-	int changeMemberPw(int memberNo, String currentPw, String newPw);
+	int deleteMember(int memberNo);
 
 
 

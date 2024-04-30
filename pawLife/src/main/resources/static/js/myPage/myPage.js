@@ -428,10 +428,30 @@ profileListBtn.addEventListener('click',()=>{
 
 
 //---------------------------------------------------------------------------------
-/* 마이페이지 프로필 업데이트 */ // 고치기
+/* 마이페이지 프로필  */ 
 
 
-/* 회원 정보 수정 페이지 */
+/* 회원 탈퇴 */
+
+const memberDel = document.querySelector("#memberDel");
+
+if(memberDel !=null){
+
+  memberDel.addEventListener("submit", e=>{
+
+    if( !confirm("정말 탈퇴하시겠습니까?")){ 
+
+      alert("취소되었습니다");
+      e.preventDefault();
+      return;
+     }
+
+
+  })
+}
+
+
+// ------------------------------------------------------------------------------
 
 /* 프로필 이미지 추가/ 변경 / 삭제 */
 
