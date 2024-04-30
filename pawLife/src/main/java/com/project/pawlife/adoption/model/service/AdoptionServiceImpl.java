@@ -145,9 +145,54 @@ public class AdoptionServiceImpl implements AdoptionService {
 	   }
 		
 		
-		return -1;
+		return result;
+	}
+	@Override
+	public int adoptUpdate(Adopt adoptInput,MultipartFile thumnailImg) {
+	
+			// 수정할 경로
+			String updatePath = null;
+			
+			String rename = null;
+			
+			// 업로드한 이미지가 있을 경우
+			if(!thumnailImg.isEmpty()) {
+				
+				// updatePath 조합
+				
+				// 파일명 조합
+				rename = Utility.fileRename(thumnailImg.getOriginalFilename());
+
+				// /myPage/profile/변경된파일명.jpg
+				updatePath = adoptWebPath+rename;
+				
+				adoptInput.setThumnail(updatePath);
+			}
+			
+			
+			int result = mapper.adoptUpdate(adoptInput);
+			
+			if(result > 0) {
+				try {
+					thumnailImg.transferTo(new File(adoptFolderPath + rename));
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new AdoptInsertException("입양 게시글 이미지 삽입 중 예외 발생");
+				}
+			}
+			
+			
+			return result;
+			
 	}
 	
+	/** 게시글 삭제
+	 *
+	 */
+	@Override
+	public int adoptDelete(Map<String, Integer> map) {
+		return mapper.adoptDelete(map);
+	}
 	
 	
 }

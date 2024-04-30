@@ -46,11 +46,13 @@ submitPost.addEventListener("submit", e => {
    oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 
-//     // 유효성 검사 넣어라
 
-let str = document.querySelector("#adoptContent").value;
 
-str = str.replace(/(<p>|<\/p>|\&nbsp\;)/g,"").trim()
+    /* 유효성 검사 */
+
+    let str = document.querySelector("#adoptContent").value;
+
+    str = str.replace(/(<p>|<\/p>|\&nbsp\;)/g,"").trim()
 
     /* 제목 공란 여부 */
     if(title.value.trim().length==0){

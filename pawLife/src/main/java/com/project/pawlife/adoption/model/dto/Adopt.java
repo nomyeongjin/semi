@@ -43,6 +43,6 @@ public class Adopt {
 	
 	// 북마크
 	private String bookmarkCheck;
-	private String bookmark;
+	private int bookmark;
 
 }

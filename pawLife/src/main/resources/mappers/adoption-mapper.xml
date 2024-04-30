@@ -3,6 +3,11 @@
 <mapper namespace="com.project.pawlife.adoption.model.mapper.AdoptionMapper">
 
 	<insert id="adoptionInsert"><!-- 2,1 나중에 memberNo, boardCode로 바꾸기 -->
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="adoptNo">
+		SELECT SEQ_ADOPT_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
 		INSERT INTO "ADOPT"
 		VALUES(SEQ_ADOPT_NO.NEXTVAL,
 				#{adoptTitle},
@@ -69,6 +74,32 @@
    	INSERT INTO "BOOKMARK" (MEMBER_NO, ADOPT_NO)
 	VALUES(#{memberNo}, #{adoptNo})
  </insert>
+ 
+ 
+ <!-- 게시글 수정  -->
+ <update id="adoptUpdate">
+ 	UPDATE ADOPT
+ 	SET
+ 	ADOPT_TITLE = #{adoptTitle},
+ 	ADOPT_CONTENT = #{adoptContent},
+ 	THUMNAIL = #{thumnail},
+ 	ADOPT_NAME = #{adoptName},
+ 	ADOPT_AGE = #{adoptAge},
+ 	ADOPT_TYPE = #{adoptType},
+ 	ADOPT_ADDRESS = #{adoptAddress}
+ 	WHERE ADOPT_NO = #{adoptNo}
+ 	AND BOARD_CODE = 1
+ 	AND MEMBER_NO = #{memberNo} 
+ 
+ </update>
+ 
+ <delete id="adoptDelete">
+ 	UPDATE ADOPT
+ 	SET ADOPT_DEL_FL = 'Y'
+ 	WHERE ADOPT_NO = #{adoptNo}
+ 	AND BOARD_CODE = 1
+ 	AND MEMBER_NO = #{memberNo} 
+ </delete>
  
 	
 </mapper>
