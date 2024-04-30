@@ -46,16 +46,18 @@ public class CommentController {
 		
 		return service.insert(comment);
 	}
+	
 	/** 댓글 수정
 	 * @param boardNo
 	 * @return
 	 */
-	@ResponseBody
+
 	@PutMapping("")
 	public int update(@RequestBody Comment comment) {
 		
 		return service.update(comment);
 	}
+	
 	/** 댓글 삭제
 	 * @param boardNo
 	 * @return
