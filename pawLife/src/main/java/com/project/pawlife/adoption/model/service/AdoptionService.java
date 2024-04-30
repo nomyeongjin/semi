@@ -34,7 +34,7 @@ public interface AdoptionService {
 	 * @param thumnailImg 
 	 * @return
 	 */
-	int adoptUpdate(Adopt adoptInput, MultipartFile thumnailImg);
+	int adoptUpdate(Adopt adoptInput, MultipartFile thumnailImg,int statusCheck);
 
 	/** 입양 게시글 삭제
 	 * @param map

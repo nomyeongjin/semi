@@ -195,6 +195,18 @@ public class AdoptionController {
 		return path;
 	}
 	
+	/** 수정하기
+	 * @param adoptNo
+	 * @param adoptInput
+	 * @param loginMember
+	 * @param thumnailImg
+	 * @param deleteOrder
+	 * @param querystring
+	 * @param ra
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
 	@PostMapping("editAdoption/{adoptNo:[0-9]+}/update")
 	public String editAdopt(
 			@PathVariable("adoptNo") int adoptNo,
@@ -203,6 +215,7 @@ public class AdoptionController {
 			@RequestParam("thumnailImg") MultipartFile thumnailImg,
 			@RequestParam(value="deleteOrder", required=false)String deleteOrder,
 			@RequestParam(value="querystring", required=false, defaultValue="")String querystring,
+			@RequestParam("statusCheck") int statusCheck,
 			RedirectAttributes ra
 			) throws IllegalStateException, IOException{
 		
@@ -210,7 +223,7 @@ public class AdoptionController {
 		int memberNo = loginMember.getMemberNo();
 		adoptInput.setMemberNo(memberNo);
 		
-		int result = service.adoptUpdate(adoptInput,thumnailImg);
+		int result = service.adoptUpdate(adoptInput,thumnailImg,statusCheck);
 		
 		String message = null;
 		String path = null;

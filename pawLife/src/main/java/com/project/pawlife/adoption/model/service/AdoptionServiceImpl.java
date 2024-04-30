@@ -148,12 +148,16 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return result;
 	}
 	@Override
-	public int adoptUpdate(Adopt adoptInput,MultipartFile thumnailImg) {
+	public int adoptUpdate(Adopt adoptInput,MultipartFile thumnailImg,int statusCheck) {
 	
 			// 수정할 경로
 			String updatePath = null;
 			
 			String rename = null;
+			
+			if(statusCheck==-1) {
+				adoptInput.setThumnail("none");
+			}
 			
 			// 업로드한 이미지가 있을 경우
 			if(!thumnailImg.isEmpty()) {
