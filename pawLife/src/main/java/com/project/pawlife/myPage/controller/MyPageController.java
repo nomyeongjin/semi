@@ -86,12 +86,7 @@ public class MyPageController {
 		int memberNo = loginMember.getMemberNo();
 
 		List<Review> commentList = service.selectComment(memberNo);
-		/*
-		 * String message=null;
-		 * 
-		 * if(commentList ==null ) ra.addFlashAttribute("message",message);
-		 */
-		 
+
 		return commentList;
 	}
 
@@ -101,6 +96,7 @@ public class MyPageController {
      * @param ra
      * @return bookmarkList
      */
+    @ResponseBody
     @GetMapping("selectBookMark")
     public List<Adopt> selectBookMark(
     	@SessionAttribute("loginMember") Member loginMember, 
