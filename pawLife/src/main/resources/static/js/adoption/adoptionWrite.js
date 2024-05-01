@@ -1,8 +1,38 @@
+// submitPost = function() {
+//    oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
+  
+
+ 
+
+
+//    console.log(title);
+//    console.log(content);
+
+//    const obj = {
+//        "adoptTitle" : title,
+//        "adoptContent" : content,
+//        "infoName":infoName,
+//        "infoAge":infoAge,
+//        "infoType":infoType,
+//        "infoAddress":infoAddress
+//    };
+
+//    fetch("/adoption/adoptionWrite", {
+//        method : "POST",
+//        headers : {"Content-Type" : "application/json"},
+//        body : JSON.stringify(obj)
+//    })
+//    .then( resp => resp.text() )
+//    .then( result => {
+//        console.log(result);
+//    })
+
+// }
 /* 썸네일 이미지 추가 변경 삭제 */
 // -1 : 초기 상태(변화 없음)
 // 0  : 프로필 이미지 삭제
 // 1  : 새 이미지 선택
-let statusCheck = 0;
+let statusCheck = -1;
 
 // 요소.cloneNode(true/false) : 요소 복제(true 작성 시 하위 요소도 복제)
 let backupInput;
@@ -63,7 +93,7 @@ const changeImageFn = e=>{
         alert("최대 5MB 이하의 이미지 파일만 등록 가능합니다.")
 
         // 선택한 이미지가 없는데 5MB 초과하는 이미지를 선택한 경우
-        if(statusCheck == 0){
+        if(statusCheck == -1){
             thumnail.value= '';
         }else{// 기존 선택한 이미지가 있는데 
             // 다음 선택한 이미지가 최대 크기를 초과한 경우
@@ -149,16 +179,6 @@ deleteImage.addEventListener("click",()=>{
 const submitPost = document.querySelector("#submitPost");
 
 submitPost.addEventListener("submit", e => {
-    
-    oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
-
-
-    if(statusCheck==0){// flag 값이 true인 경우
-        
-        e.preventDefault();
-        alert("이미지를 선택해주세요")
-    }
-
 
    const title = document.querySelector("#adoptTitle");
    const content = document.querySelector("#adoptContent");
@@ -168,8 +188,7 @@ submitPost.addEventListener("submit", e => {
    const infoAddress = document.querySelector("#infoAddress");
 
 
-
-
+   oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 
 

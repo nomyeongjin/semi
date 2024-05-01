@@ -45,16 +45,4 @@ public class Adopt {
 	private String bookmarkCheck;
 	private int bookmark;
 
-	
-	// 이메일 dto
-	private String contactEmail;
-	private String contactTitle;
-	private String contactName;
-	private String contactGender;
-	private String contactAge;
-	private String contactTel;
-	private String contactTime;
-	private String contactAddress;
-	private String contactMarry;
-	private String contactJob;
 }

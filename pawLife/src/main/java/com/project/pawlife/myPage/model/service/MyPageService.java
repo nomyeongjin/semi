@@ -2,7 +2,6 @@ package com.project.pawlife.myPage.model.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,13 +10,7 @@ import com.project.pawlife.member.model.dto.Member;
 import com.project.pawlife.review.model.dto.Review;
 
 public interface MyPageService {
-	
-	
-	/** 로그인한 회원이 작성한 입양 게시글 조회
-	 * @param memberNo
-	 * @return adoptList
-	 */
-	List<Adopt> selectAdopt(int memberNo);
+
 
 	/** 로그인한 회원이 쓴 후기 게시글 조회
 	 * @param memberNo 
@@ -57,12 +50,11 @@ public interface MyPageService {
 	/** 프로필 이미지 변경
 	 * @param profileImg
 	 * @param loginMember
-	 * @param statusCheck 
 	 * @return result
 	 * @throws IllegalStateException
 	 * @throws IOException
 	 */
-	int profile(MultipartFile imageInput, Member loginMember, int statusCheck) throws IllegalStateException, IOException;
+	int profile(MultipartFile profileImg, Member loginMember) throws IllegalStateException, IOException;
 
 	
 	/** 회원 탈퇴
@@ -70,12 +62,6 @@ public interface MyPageService {
 	 * @return
 	 */
 	int deleteMember(int memberNo);
-
-	/** 로그인한 회원이 작성한 입양 게시글의 수정 페이지로 이동
-	 * @param map
-	 * @return
-	 */
-	Adopt selectOneAdopt(Map<String, Integer> map);
 
 
 

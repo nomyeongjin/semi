@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.project.pawlife.common.exception.AdoptInsertException;
+import com.project.pawlife.common.exception.ReviewInsertException;
 import com.project.pawlife.common.util.Pagination;
 import com.project.pawlife.common.util.Utility;
 import com.project.pawlife.review.model.dto.Review;
 import com.project.pawlife.review.model.mapper.ReviewMapper;
 
+import ch.qos.logback.core.rolling.helper.RenameUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,7 +38,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	// 후기 게시글 작성
 	@Override
-	public int reviewWrite(Review inputReivew, MultipartFile thumnailImg, int memberNo) {
+	public int reviewInsert(Review inputReview, MultipartFile thumnailImg, int memberNo) {
 	
 		String updatePath = null;
 		String rename = null;
@@ -44,11 +47,11 @@ public class ReviewServiceImpl implements ReviewService{
 			rename = Utility.fileRename(thumnailImg.getOriginalFilename());
 			updatePath = reviewWebPath + rename;
 			
-			inputReivew.setThumnail(updatePath);
-			inputReivew.setMemberNo(memberNo);
+			inputReview.setThumnail(updatePath);
+			inputReview.setMemberNo(memberNo);
 		}
 		
-		int result = mapper.reviewWrite(inputReivew);
+		int result = mapper.reviewInsert(inputReview);
 		
 		if(result < 0) {
 			try {
@@ -90,6 +93,47 @@ public class ReviewServiceImpl implements ReviewService{
 	public Review selectOneReview(Map<String, Integer> map) {
 		
 		return mapper.selectOneReview(map);
+	}
+
+
+	// 게시글 수정
+	@Override
+	public int reviewUpdate(Review inputReview, MultipartFile thumnailImg, int statusCheck) {
+
+		String updatePath = "";
+		String rename = "";
+		
+		if(statusCheck == -1) {
+			inputReview.setThumnail("none");
+		}
+		
+		// 업로드 한 이미지가 있을 경우
+		if( !thumnailImg.isEmpty()) { 
+			
+			rename = Utility.fileRename(thumnailImg.getOriginalFilename());
+			updatePath = reviewWebPath + rename;
+			inputReview.setThumnail(updatePath);
+		}
+		
+		int result = mapper.reviewUpdate(inputReview);
+		
+		if(result > 0) {
+			try {
+				thumnailImg.transferTo(new File(reviewFolderPath + rename));
+			} catch (Exception e) {
+//				e.printStackTrace();
+//				throw new ReviewInsertException("후기 게시글 이미지 삽입 중 예외 발생");
+			}
+		}
+		return result;
+	}
+
+
+	// 게시글 삭제
+	@Override
+	public int reviewDelete(Map<String, Integer> map) {
+		
+		return mapper.reviewDelete(map);
 	}
 
 

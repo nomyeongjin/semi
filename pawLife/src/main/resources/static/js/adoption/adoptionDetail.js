@@ -91,13 +91,3 @@ bookmarkCheck.addEventListener("click", e=>{
 });
 
 
-const contactBtn = document.querySelector("#contactBtn")
-
-contactBtn.addEventListener("click",()=>{
-
-    location.href =  location.pathname.replace('adoptionList', 'contactAdopt')
-                    + location.search;
-
-})
-
-

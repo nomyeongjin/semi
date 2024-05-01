@@ -1,9 +1,53 @@
-// const updateBtn = document.querySelector(".update-btn")
+/* 수정 버튼 클릭 시 */
+const updateBtn = document.querySelector(".update-btn")
 
-// updateBtn.addEventListener("click",()=>{
-//     location.href="reviewUpdate"
-// })
+if(updateBtn!=null){
+    updateBtn.addEventListener("click",()=>{
+    
+        location.href =  location.pathname.replace('reviewList', 'editReview')
+                     + "/update"
+                     + location.search;
+    })
+}
 
+
+
+/* 삭제 버튼 클릭 시 */
+const deleteBtn = document.querySelector(".delete-btn");
+
+if(deleteBtn!=null){
+
+    deleteBtn.addEventListener("click",()=>{
+        if(!confirm("삭제하시겠습니까?")){
+            alert("취소됨")
+            return;
+        }
+
+        const url = location.pathname.replace("reviewList","editReview") +"/delete";
+
+        const form = document.createElement("form")
+        form.action = url;
+        form.method = "POST";
+
+        // cp값을 저장할 input 생성
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "cp";
+
+        // 쿼리스트링에서 원하는 파라미터 얻어오기
+        const params = new URLSearchParams(location.search)
+        const cp = params.get("cp");
+        input.value = cp;
+
+        form.append(input);
+
+        // 화면에 form태그를 추가한 후 제출하기
+        document.querySelector("body").append(form);
+        form.submit();
+    })
+
+}
+    
 
 /* 댓글 목록 조회 */
 const selectCommentList = () => {
