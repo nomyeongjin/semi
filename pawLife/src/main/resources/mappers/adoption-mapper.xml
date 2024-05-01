@@ -107,5 +107,28 @@
  	AND MEMBER_NO = #{memberNo} 
  </delete>
  
+ <!-- 작성자 이메일 찾기 -->
+ <select id="writerEmail">
+ 	SELECT MEMBER_EMAIL
+	FROM MEMBER
+	JOIN ADOPT USING(MEMBER_NO)
+	WHERE ADOPT_NO = #{adoptNo}
+ </select>
+ 
+ <!-- 폼에 제출한 값 저장하기 -->
+ <insert id="insertContact">
+	 INSERT INTO CONTACT
+	 VALUES(SEQ_CONTACT_NO.NEXTVAL,
+	 		#{contactEmail},
+	 		#{contactName},
+	 		#{contactGender},
+	 		#{contactAge},
+	 		#{contactTel},
+	 		#{contactTime},
+	 		#{contactAddress},
+	 		#{contactMarry},
+	 		#{contactJob}
+	 )
+ </insert>
 	
 </mapper>
