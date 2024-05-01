@@ -491,3 +491,10 @@ margin-top: 10px;
     color : white;
     margin-left: 2px;
   }
+
+
+/* 입양 리스트 비동기 조회 시 썸네일 사진 */
+#thumbnailP{
+  width: 100px;
+  height: 80px;
+}

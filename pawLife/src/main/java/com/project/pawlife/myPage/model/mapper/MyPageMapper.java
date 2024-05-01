@@ -71,5 +71,12 @@ public interface MyPageMapper {
 	 */
 	Adopt selectOneAdopt(Map<String, Integer> map);
 
+	/** 로그인한 회원이 작성한 입양 게시글
+	 * ( 마이페이지 입양 리스트)에서 입양 완료 버튼을 누른 경우
+	 * @param memberNo
+	 * @return
+	 */
+	int adoptDel(int memberNo);
+
 
 }

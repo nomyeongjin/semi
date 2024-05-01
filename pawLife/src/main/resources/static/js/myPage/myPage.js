@@ -86,7 +86,7 @@ const selectAdoptBoard=()=>{
 
             
       /* 테이블 헤더 만들기 */
-      const headers=["이미지","이름","나이","종","발견장소",""];
+      const headers=["","이름","나이","종","발견장소",""];
       for(let head of headers){
         
         const th = document.createElement("th");
@@ -109,9 +109,17 @@ const selectAdoptBoard=()=>{
         
         // 제목인 경우
          if(key== 'thumnail'){
+          const img= document.createElement("img");
+          
+          img.src = adopt[key];
+          img.id="thumbnailP";
+
           const a= document.createElement("a");
-          a.innerText = adopt[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/adoption/adoptionList?adoptNo=" + adopt.adoptNo;
+         
+          a.href="/adoption/adoptionList/" + adopt.adoptNo;
+          
+          a.append(img); // 이미지를 링크(a) 태그에 추가
+
           td.append(a);
         
          }else{
@@ -128,22 +136,63 @@ const selectAdoptBoard=()=>{
         editButton.addEventListener("click", () => {
             // 로그인한 회원이 작성한 입양게시글의 수정 페이지로 보내기
             location.href = location.pathname.replace('myPage/first', 'adoption/editAdoption') 
-            + "/update"
-            + location.search;
+            + "/"+ adopt.adoptNo
+            + "/update?";
+            
         });
         const editCell = document.createElement("td");
-        editCell.appendChild(editButton);
-        tr.appendChild(editCell);
+        editCell.append(editButton);
+        tr.append(editCell);
 
         // 입양완료 버튼
-        const deleteButton = document.createElement("button");
-        deleteButton.innerText = "입양 완료";
-        deleteButton.addEventListener("click", () => {
-            // 입양 완료 버튼 클릭 시 해당 게시글의 adoptDelFl 'Y'로 바꾸가
-        });
+        const adoptDelButton = document.createElement("button");
+        adoptDelButton.name="adoptDelButton"
+        adoptDelButton.innerText = "입양 완료 수정";
+        adoptDelButton.addEventListener("click", () => {
+            // 입양 완료 버튼 클릭 시 해당 게시글의 adoptDelFl 'Y'로 바꾸기
+            // 입양 완료 버튼 누르면 이미 입양 완료된 애는 이미 입양 완료 되었다고 뜨고
+            // 
+               
+                
+                if (adopt.adoptDelFl == 'N') {
+                  // 확인 다이얼로그 표시
+                  if (!confirm("입양 완료 하시겠습니까?")) {
+                      // 취소를 선택한 경우 알림 표시 및 기본 이벤트 중지
+                      alert("취소되었습니다");
+                      return; // 함수 종료
+                  }
+          
+                }else{
+
+
+                  fetch("adoptDelButton")
+
+                  .then(resp => resp.json())
+                
+                  .then(result =>{
+
+                    if(result > 0){
+                      alert("입양 완료 되었습니다");
+                    }
+                    
+                    
+                  });
+                }
+
+
+                  
+                
+
+
+
+
+                
+        
+                
+           });
        
-        editCell.appendChild(deleteButton);
-        tr.appendChild(editCell);
+        editCell.append(adoptDelButton);
+        tr.append(editCell);
         // tbody의 자식으로 tr( 한 줄 ) 추가
         tbody.append(tr);
         
@@ -225,7 +274,7 @@ const selectMyReviewBoard = () =>{
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
           a.innerText = review[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewList/reviewNo?" + review.reviewNo;
+          a.href="/review/reviewList/" + review.reviewNo;
           td.append(a);
         
          }else{
@@ -346,7 +395,8 @@ const selectMyCommentBoard = () =>{
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
           a.innerText = com[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewList/reviewNo?" + com.reviewNo;
+          a.href="/review/reviewList/" + com.reviewNo;
+          
           td.append(a);
         
          }else{
@@ -462,7 +512,7 @@ const selectMyBookMark=()=>{
          if(key== 'adoptTitle'){
           const a= document.createElement("a");
           a.innerText = mark[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/adoption/adoptionList?adoptNo=" + mark.adoptNo;
+          a.href="/adoption/adoptionList/" + mark.adoptNo;
           td.append(a);
         
          }else{
