@@ -59,5 +59,17 @@ public interface AdoptionMapper {
 	 * @return
 	 */
 	int adoptDelete(Map<String, Integer> map);
+
+	/** 문의 페이지 DB 저장
+	 * @param contactInput
+	 * @return
+	 */
+	int insertContact(Adopt contactInput);
+
+	/** 작성자 이메일 찾기
+	 * @param adoptNo
+	 * @return
+	 */
+	String writerEmail(int adoptNo);
 	
 }

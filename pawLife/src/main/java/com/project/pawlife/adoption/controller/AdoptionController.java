@@ -243,6 +243,12 @@ public class AdoptionController {
 	}
 	
 	
+	/** 게시글 삭제
+	 * @param loginMember
+	 * @param adoptNo
+	 * @param ra
+	 * @return
+	 */
 	@PostMapping("editAdoption/{adoptNo:[0-9]+}/delete")
 	public String deleteAdopt(
 			@SessionAttribute("loginMember") Member loginMember,
@@ -292,6 +298,58 @@ public class AdoptionController {
 		 return service.bookCheck(map);
 	}
 	
+	
+	/** 문의 페이지 이동
+	 * @return
+	 */
+	@GetMapping("contactAdopt/{adoptNo:[0-9]+}")
+	public String contactAdopt(@PathVariable("adoptNo") int adoptNo) {
+		return "adoption/adoptionContact";
+	}
+	
+	
+	/** 문의 내용 이메일 전송
+	 * @param aoptNo
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("contactAdopt/{adoptNo:[0-9]+}/contact")
+	public String contactMail(
+			@PathVariable("adoptNo") int adoptNo,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra,
+			Adopt contactInput,
+			Model model
+			) {
+		
+		String email = service.writerEmail(adoptNo);
+		
+		
+		
+		contactInput.setContactEmail(email);
+		
+		contactInput.setAdoptNo(adoptNo);
+		
+		int result = service.sendEmail(contactInput);
+		
+		model.addAttribute(contactInput);
+		
+		String path = null;
+		String message = null;
+		
+		if(result>0) {
+			path = "/adoption/adoptionList"+adoptNo;
+			message="문의가 발송되었습니다.";
+		}else {
+			path = "/contactAdopt/"+adoptNo;
+			message="문의 발송 실패.";
+		}
+		
+		ra.addFlashAttribute("message",message);
+		
+		return "redirect:"+path;
+	}
 	
 	
 	
