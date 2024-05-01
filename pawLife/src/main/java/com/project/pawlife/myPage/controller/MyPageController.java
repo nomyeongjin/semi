@@ -208,7 +208,29 @@ public class MyPageController {
 		 ra.addFlashAttribute("message",message);
 		 return "redirect:" +path;
    }
-   
+
+ @PostMapping("adoptDelButton")
+  public String adoptDel(
+		  @SessionAttribute("loginMember") Member loginMember,		
+		   RedirectAttributes ra
+		  ) {
+	   int memberNo = loginMember.getMemberNo();
+	   int result = service.adoptDel(memberNo);
+	   
+	   String path = null;
+	   String message = null;
+	   
+	   if(result > 0) {
+		   message = "입양 완료 되었습니다";
+		   path="/myPage/myPage-first";
+	   }else {
+		   message = "입양 미완료 되었습니다";
+		   path = "/myPage/myPage-first";
+	   }
+	   
+	   ra.addFlashAttribute("message",message);
+	   return "redirect:" + path;
+ }
    
    /** 회원 탈퇴
  * @param loginMember
