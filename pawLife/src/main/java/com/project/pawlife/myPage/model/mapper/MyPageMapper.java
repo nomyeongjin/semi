@@ -11,8 +11,14 @@ import com.project.pawlife.review.model.dto.Review;
 
 @Mapper
 public interface MyPageMapper {
+	
+	/** 로그인한 회원이 작성한 입양 게시글 조회
+	 * @param memberNo
+	 * @return adoptList
+	 */
+	List<Adopt> selectAdopt(int memberNo);
 
-	/** 로그인한 회원이 작성한 게시글 조회
+	/** 로그인한 회원이 작성한 후기 게시글 조회
 	 * @return
 	 */
 	List<Review> selectReview(int memberNo);
@@ -58,6 +64,12 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int deleteMember(int memberNo);
+
+	/** 로그인한 회원이 작성한 입양 게시글의 수정 페이지로 이동
+	 * @param map
+	 * @return
+	 */
+	Adopt selectOneAdopt(Map<String, Integer> map);
 
 
 }

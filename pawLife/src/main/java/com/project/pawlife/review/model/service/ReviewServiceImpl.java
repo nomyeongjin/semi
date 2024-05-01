@@ -11,14 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.pawlife.common.exception.AdoptInsertException;
-import com.project.pawlife.common.exception.ReviewInsertException;
 import com.project.pawlife.common.util.Pagination;
 import com.project.pawlife.common.util.Utility;
 import com.project.pawlife.review.model.dto.Review;
 import com.project.pawlife.review.model.mapper.ReviewMapper;
 
-import ch.qos.logback.core.rolling.helper.RenameUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
