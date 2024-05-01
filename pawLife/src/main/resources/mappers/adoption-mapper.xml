@@ -107,7 +107,6 @@
  	AND MEMBER_NO = #{memberNo} 
  </delete>
  
-<<<<<<< HEAD
  <!-- 작성자 이메일 찾기 -->
  <select id="writerEmail">
  	SELECT MEMBER_EMAIL
@@ -131,7 +130,6 @@
 	 		#{contactJob}
 	 )
  </insert>
-=======
  <!-- 검색 조건이 맞는 게시글 수 조회  -->
  <select id="getSearchCount">
  		SELECT COUNT(*)
@@ -219,6 +217,5 @@
 		ORDER BY ADOPT_NO DESC
  </select>
  
->>>>>>> 692a54f45e0868b34bc366f224c3b734dc1a55a6
 	
 </mapper>
