@@ -53,5 +53,11 @@ public interface AdoptionService {
 	 * @return
 	 */
 	String writerEmail(int adoptNo);
+	/** 검색 기능
+	 * @param paramMap
+	 * @param cp
+	 * @return
+	 */
+	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
 
 }
