@@ -1,10 +1,14 @@
 package com.project.pawlife.myPage.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +60,26 @@ public class MyPageController {
       
       return "myPage/myPage-first";
    }
+   
+   
+   
+   
+   //로그인한 회원이 올린 입양 게시글 전체 조회
+   @ResponseBody
+   @GetMapping("selectAdoptList")
+   public List<Adopt> selectAdopt(
+		   @SessionAttribute("loginMember")Member loginMember
+		   ){
+	   
+	   
+	   int memberNo = loginMember.getMemberNo();
+	   
+	List<Adopt> adoptList = service.selectAdopt(memberNo);
+	
+	
+	   
+	   return adoptList;
+   }
 
 
    // 로그인한 회원이 작성한 후기 게시글 전체 조회
@@ -86,12 +110,7 @@ public class MyPageController {
 		int memberNo = loginMember.getMemberNo();
 
 		List<Review> commentList = service.selectComment(memberNo);
-		/*
-		 * String message=null;
-		 * 
-		 * if(commentList ==null ) ra.addFlashAttribute("message",message);
-		 */
-		 
+
 		return commentList;
 	}
 
@@ -101,6 +120,7 @@ public class MyPageController {
      * @param ra
      * @return bookmarkList
      */
+    @ResponseBody
     @GetMapping("selectBookMark")
     public List<Adopt> selectBookMark(
     	@SessionAttribute("loginMember") Member loginMember, 
@@ -115,7 +135,13 @@ public class MyPageController {
     }
     
     
-   @PostMapping("profileUpdate")
+   /** 개인정보 수정
+ * @param inputMember
+ * @param loginMember
+ * @param ra
+ * @return
+ */
+@PostMapping("profileUpdate")
    public String profileUpdate(
 		   Member inputMember,
 		   @SessionAttribute("loginMember") Member loginMember,
@@ -146,7 +172,14 @@ public class MyPageController {
        return "redirect:/myPage/myPage-profileupdate";
    }
    
-   @PostMapping("changePw")
+   /** 비밀번호 수정
+ * @param loginMember
+ * @param currentPw
+ * @param newPw
+ * @param ra
+ * @return
+ */
+@PostMapping("changePw")
    public String changeMemberPw(
 		   @SessionAttribute("loginMember") Member loginMember,
 		   @RequestParam("currentPw") String currentPw,
@@ -177,7 +210,13 @@ public class MyPageController {
    }
    
    
-   @PostMapping("memberdel")
+   /** 회원 탈퇴
+ * @param loginMember
+ * @param status
+ * @param ra
+ * @return
+ */
+@PostMapping("memberdel")
    public String memberDel(
 		   @SessionAttribute("loginMember") Member loginMember,
 		   SessionStatus status,			
@@ -214,29 +253,86 @@ public class MyPageController {
 	 * @throws IOException
 	 * @throws IllegalStateException
 	 */
-	@PostMapping("profile")
-	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
-			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra)
-			throws IllegalStateException, IOException {
-
-		// 로그인한 회원 번호
-		int memberNo = loginMember.getMemberNo();
-
-		// 서비스 호출
-		// /myPage/profile/변경된파일명 형태의 문자열
-		// 현재 로그인한 회원의 PROFILE_IMG 컬럼 값으로 수정(UPDATE)
-		int result = service.profile(profileImg, loginMember);
-
-		String message = null;
-
-		if (result > 0)
-			message = "변경 성공";
-		else
-			message = "변경 실패";
-
-		ra.addFlashAttribute("message", message);
-
-		return "redirect:/myPage/myPage-first";
+@PostMapping("profile")
+public String profile(
+		@RequestParam("imageInput") MultipartFile imageInput,
+		@SessionAttribute("loginMember") Member loginMember, 
+		@RequestParam("statusCheck") int statusCheck,
+		// session에 있는 loginMember의 주소를 가져옴
+		RedirectAttributes ra) throws IllegalStateException, IOException {
+	
+	// 로그인한 회원 번호
+	int memberNo = loginMember.getMemberNo();
+	
+	// 서비스 호출
+	// -> /myPage/profile/변경된 파일명 형태의 문자열
+	//  현재 로그인한 회원의 PROFILE_IMG 컬럼 값으로 수정( UPDATE )
+	
+	int result = service.profile(imageInput, loginMember,statusCheck);
+	
+	
+	String message = null;
+	
+	if(result >0) {
+		message = "변경 성공";
+		
+		//세션에 저장된 로그인 회원 정보에서
+		// 프로필 이미지 수정
+		
+	} else {
+		message = "변경 실패";
 	}
+	
+	ra.addFlashAttribute("message",message);
+	
+	
+	
+	return "redirect:/myPage/first"; 
+ }
+
+ //----------------------------------------------------------------------
+
+   // 입양 리스트 
+   
+
+	/** 입양리스트에서 수정 버튼 클릭시 
+	 *  해당 게시글의 입양 수정 화면으로 전환
+	 * @return
+	 */
+	@GetMapping("adoption/editAdoption/{adoptNo:[0-9]+}/update")
+	public String adoptionUpdate(
+			@PathVariable("adoptNo") int adoptNo,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra,
+			Model model
+			) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("adoptNo",adoptNo);
+		Adopt adopt = service.selectOneAdopt(map);
+		
+		
+		String message = null;
+		String path = null;
+		
+		if(adopt == null) {
+			message = "해당 게시글이 존재하지 않습니다.";
+			path = "redirect:/myPage/first"; 
+			
+			ra.addFlashAttribute("message",message);
+			
+	
+		}else {
+			path ="adoption/adoptionUpdate";
+			
+			// forward의 경우
+			model.addAttribute("adopt",adopt);
+		}
+		
+		return path;
+	}
+		     
+
+
 
 }
