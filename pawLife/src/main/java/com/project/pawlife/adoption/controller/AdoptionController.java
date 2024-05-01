@@ -35,18 +35,30 @@ public class AdoptionController {
 	@Autowired
 	private final AdoptionService service;
 	
-	/** 입양 게시판 리스트 항목으로 이동
+	/** 입양 게시판 리스트 항목으로 이동 + 게시글 검색
 	 * @param cp : 현재 조회 요청한 페이지(없으면 1)
 	 * @return
 	 */
 	@GetMapping("adoptionList")
 	public String adoptionPage(
 			@RequestParam(value="cp",required=false, defaultValue="1") int cp /*페이지 수*/,
-			Model model
+			Model model,
+			@RequestParam Map<String, Object> paramMap
 			) {
 		
 		// 조회 서비스 요청 후 결과 반환
-		Map<String, Object> map = service.selectAdoptList(cp);
+		Map<String, Object> map = null;
+		
+		if(paramMap.get("key")==null) {
+		
+			map = service.selectAdoptList(cp);
+		
+		}else {
+			
+			// 검색 서비스 호출
+			map = service.searchList(paramMap, cp);
+			
+		}
 		
 		model.addAttribute("pagination",map.get("pagination"));
 		model.addAttribute("adoptList",map.get("adoptList"));
@@ -291,8 +303,6 @@ public class AdoptionController {
 		
 		 return service.bookCheck(map);
 	}
-	
-	
 	
 	
 	

@@ -198,5 +198,32 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return mapper.adoptDelete(map);
 	}
 	
+	@Override
+	public Map<String, Object> searchList(Map<String, Object> paramMap, int cp) {
+
+		int listCount = mapper.getSearchCount(paramMap);
+		
+		Pagination pagination = new Pagination(cp, listCount);
+		
+		int limit = pagination.getLimit(); 
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<Adopt> adoptList = mapper.selectSearchList(paramMap, rowBounds);
+		
+		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+				
+		map.put("pagination", pagination);
+		map.put("adoptList", adoptList);
+		
+		// 5. 결과 반환
+		return map;
+		
+				
+		
+		
+	}
+	
 	
 }
