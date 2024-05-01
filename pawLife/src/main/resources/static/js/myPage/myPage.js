@@ -25,8 +25,8 @@ const boardListBtn = document.querySelector("#boardListBtn");
 /* -- memberNo의 댓글 모음  */
 const commentListBtn = document.querySelector("#commentListBtn");
 
-/* memberno가 좋아요 누른 게시글 조회 */
-const likeListBtn = document.querySelector("#likeListBtn");
+/* memberno가 북마크한 누른 게시글 조회 */
+const bookListBtn = document.querySelector("#bookListBtn");
 
 
 /* ----------------------------------------------------------- */
@@ -91,7 +91,7 @@ const selectMyReviewBoard = () =>{
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
           a.innerText = review[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewDetail?reviewNo=" + review.reviewNo;
+          a.href="/review/reviewList?reviewNo=" + review.reviewNo;
           td.append(a);
         
          }else{
@@ -212,7 +212,7 @@ const selectMyCommentBoard = () =>{
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
           a.innerText = com[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/review/reviewDetail?reviewNo=" + com.commentNo;
+          a.href="/review/reviewList/reviewNo?" + com.reviewNo;
           td.append(a);
         
          }else{
@@ -318,9 +318,8 @@ const selectMyBookMark=()=>{
     for(let mark of bookmarkList){
    
 
-      const arr = ['reviewTitle', 'bookMarkCheck'];
-      const tr = document.createElement("tr"); 
-
+      const arr = ['reviewTitle', 'adoptDelFl'];
+      const tr= document.createElement("tr");
       for(let key of arr){
         const td = document.createElement("td");
         
@@ -328,12 +327,12 @@ const selectMyBookMark=()=>{
          if(key== 'reviewTitle'){
           const a= document.createElement("a");
           a.innerText = mark[key]; // 제목을 a 태그 내용으로 대입
-          a.href="/adoption/adoptionDetail?adoptNo=" + mark.adoptNo;
+          a.href="/adoption/adoptionList?adoptNo=" + mark.adoptNo;
           td.append(a);
         
          }else{
   
-          td.innerText = mark[key];
+          td.innerHtml = mark[key];
          }
 
         tr.append(td);
@@ -349,7 +348,7 @@ const selectMyBookMark=()=>{
 
 
 
-  }
+    }
 
 
   });
@@ -357,9 +356,9 @@ const selectMyBookMark=()=>{
 
 }
 
-profileListBtn.addEventListener('click',()=>{
+bookListBtn.addEventListener('click',()=>{
  
-   selectMyBookMark();
+  selectMyBookMark();
 
 
 });

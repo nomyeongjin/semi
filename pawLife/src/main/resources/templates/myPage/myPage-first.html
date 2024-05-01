@@ -46,7 +46,7 @@
               <button type="button" class= "button" id="commentListBtn">내가 쓴 댓글</button>
             
 
-              <button type="button" class= "button" id="likeListBtn">북마크한 게시글</button>
+              <button type="button" class= "button" id="bookListBtn">북마크한 게시글</button>
             
           </div>
 
@@ -84,10 +84,10 @@
                 
               </div>
 
-            
-              
-              <p id="profileNickName">닉네임</p>
-    
+           
+              <th:block th:if="${session.loginMember != null}"
+                th:text="${session.loginMember.memberNickname}">닉네임
+              </th:block>
    
             
           </form>
