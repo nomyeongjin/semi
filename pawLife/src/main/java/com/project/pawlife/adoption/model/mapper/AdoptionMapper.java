@@ -71,5 +71,17 @@ public interface AdoptionMapper {
 	 * @return
 	 */
 	String writerEmail(int adoptNo);
+	/** 삭제 되지 않은 게시글 수 조회
+	 * @param paramMap
+	 * @return
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+
+	/** 검색 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Adopt> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 	
 }
