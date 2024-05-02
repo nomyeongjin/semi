@@ -9,5 +9,4 @@
 		WHERE ADOPT_DEL_FL = 'N'
 		ORDER BY ADOPT_NO DESC
 	</select>
-
 </mapper>

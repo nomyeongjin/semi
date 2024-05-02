@@ -134,6 +134,44 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 
+	// 게시글 검색
+	@Override
+	public Map<String, Object> selectReviewList(Map<String, Object> paramMap, int cp) {
+
+		// 게시글 검색
+		int listCount = mapper.searchListCount(paramMap);
+		
+		// 페이징
+		Pagination pagination = new Pagination(cp, listCount);
+		
+		int limit = pagination.getLimit();
+		int offset = (cp-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<Review> reviewList = mapper.searchReviewList(paramMap, rowBounds);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("reviewList", reviewList);
+		
+		return map;
+	}
+
+
+	// 조회수 증가
+	@Override
+	public int updateReadCount(int reviewNo) {
+
+		int result = mapper.updateReadCount(reviewNo);
+		
+		if(result > 0) { // 현재 조회수 조회
+			return mapper.selectReadCount(reviewNo);
+		}
+		
+		return 0;
+	}
+
+
 
 	
 }
