@@ -234,5 +234,18 @@
 		ORDER BY ADOPT_NO DESC
  </select>
  
-	
+ <!-- 조회수 증가 -->
+ <update id="updateReadCount">
+ 	UPDATE "ADOPT" SET
+ 	READ_COUNT = READ_COUNT + 1
+ 	WHERE ADOPT_NO = #{adoptNo} 
+ </update>
+ 
+ <!-- 조회수 조회 -->
+ <select id="selectReadCount" resultType="_int">
+ 	SELECT READ_COUNT
+ 	FROM ADOPT
+ 	WHERE ADOPT_NO = #{adoptNo}
+ </select>
+ 	
 </mapper>
