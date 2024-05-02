@@ -109,3 +109,9 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
+pawLife/temp_pawlife SQL 구문.sql
+pawLife/src/main/java/com/project/pawlife/common/exception/ReviewInsertException.java
+pawLife/src/main/resources/static/js/adoption/adoptContact.js
+pawLife/src/main/resources/static/js/myPage/myPageProfile.js
+pawLife/src/main/resources/static/js/review/reviewUpdate.js
+pawLife/src/main/resources/templates/adoption/adoptionContactMail.html
