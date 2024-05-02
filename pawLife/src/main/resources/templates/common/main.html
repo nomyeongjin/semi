@@ -40,9 +40,13 @@
       <!-- 레이아웃용 빈공간, 빠른 도구 영역 -->
       <section class="content1">
          <h2>Pawlife에서 새로운 가족을 찾아보세요!</h2>
-         <h3>빠른 로그인</h3>
-         <button class="quickLogin">member01@kh.or.kr</button>
-         <button class="quickLogin">member02@kh.or.kr</button>
+         
+         <div>
+            <h3>빠른 로그인</h3>
+            <button class="quickLogin">member01@kh.or.kr</button>
+            <button class="quickLogin">member02@kh.or.kr</button>   
+         </div>
+         
       </section>
 
       <!-- 게시판 영역 -->
@@ -50,7 +54,7 @@
       
          <!-- 입양 게시판 -->
          <div class="card-container">
-            <a href="/adoption/adoptionList">입양 게시판<i class="fa-solid fa-chevron-right"></i></a>
+            <a href="/adoption/adoptionList">입양하기<i class="fa-solid fa-chevron-right"></i></a>
 
             <!-- 게시글 미존재시 -->
             <th:block th:if="${#lists.isEmpty(adoptList)}">
@@ -79,7 +83,7 @@
 
          <!-- 후기 게시판 -->
          <div class="card-container">
-            <a href="/review/reviewList">입양 후기 게시판<i class="fa-solid fa-chevron-right"></i></a>
+            <a href="/review/reviewList">입양 후 이야기<i class="fa-solid fa-chevron-right"></i></a>
 
             <!-- 게시글 미존재시 -->
             <th:block th:if="${#lists.isEmpty(reviewList)}">
