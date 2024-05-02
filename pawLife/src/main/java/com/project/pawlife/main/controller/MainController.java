@@ -27,12 +27,15 @@ public class MainController {
 	private final ReviewService reviewService;
 
 	
+	/** 메인페이지 화면 이동
+	 * @return
+	 */
 	@RequestMapping("")
 	public String mainPage(){
 		return "common/main";
 	}
   
-	 /** 입양 게시글
+	 /** 메인 화면에서 최신 게시글 8개 미리보기
 	 * @param model
 	 * @return
 	 */
@@ -40,25 +43,21 @@ public class MainController {
 	public String mainDisplay(Model model) {
 	
 		int cp = 1;
-
+		
+		// 입양 게시글 조회
 		List<Adopt> adoptList = service.selectMainAdopt();
-		  
-		  if(!adoptList.isEmpty()) {
+
+		if(!adoptList.isEmpty()) {
 			  model.addAttribute(adoptList);
-		  }
-		  
-		  
-		  
-		  ////////
-		  
-		  
+		}
+		
+		// 후기 게시글 조회
 		Map<String, Object> reviewMap = reviewService.selectReviewList(cp);
-		  
-		if(!reviewMap.isEmpty()) model.addAttribute("reviewList", reviewMap.get("reviewList"));
-		
-		
+		if(!reviewMap.isEmpty()) {
+			model.addAttribute("reviewList", reviewMap.get("reviewList"));
+		}		  
+
 		  return "common/main";
-		  
 	  }
 
 
