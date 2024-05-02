@@ -95,5 +95,17 @@ public interface AdoptionMapper {
 	 * @return
 	 */
 	String toEmail(int memberNo);
+
+	/** 조회수 1 증가
+	 * @param adoptNo
+	 * @return
+	 */
+	int updateReadCount(int adoptNo);
+
+	/** 조회수 조회
+	 * @param adoptNo
+	 * @return
+	 */
+	int selectReadCount(int adoptNo);
 	
 }
