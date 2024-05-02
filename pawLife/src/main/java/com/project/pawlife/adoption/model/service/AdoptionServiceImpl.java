@@ -348,4 +348,22 @@ public class AdoptionServiceImpl implements AdoptionService {
 
 	
 	
+	/** 조회수 증가
+	 *
+	 */
+	@Override
+	public int updateReadCount(int adoptNo) {
+		
+		// 조회수 1 증가
+		int result = mapper.updateReadCount(adoptNo);
+		
+		// 현재 조회 수 조회
+		if(result>0) {
+			return mapper.selectReadCount(adoptNo);
+		}
+		
+		
+		return 0;
+	}
+	
 }

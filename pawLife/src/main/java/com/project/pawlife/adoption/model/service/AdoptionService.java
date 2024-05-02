@@ -72,4 +72,10 @@ public interface AdoptionService {
 	 */
 	String toEmail(int memberNo);
 
+	/** 조회수 증가
+	 * @param adoptNo
+	 * @return
+	 */
+	int updateReadCount(int adoptNo);
+
 }
