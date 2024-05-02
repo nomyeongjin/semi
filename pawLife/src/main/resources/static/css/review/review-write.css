@@ -27,7 +27,7 @@ body{
 /* ********************************************************************* */
 
 /* 제목 */
-#inputTitle{
+.inputTitle{
     outline: none;
     border:none;
     border-bottom: 1px solid gray;
@@ -37,6 +37,7 @@ body{
     font-weight: bold;
     width: 100%;
 }
+
 
 /* 글쓰기 전체 영역 */
 .board{
