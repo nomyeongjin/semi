@@ -137,4 +137,15 @@ textarea{
     padding: 10px;
 }
 
-
+/* 원래 id 속성이였는데 클래스로 추가함!! */
+/* 제목 */
+.inputTitle{
+    outline: none;
+    border:none;
+    border-bottom: 1px solid gray;
+    margin: 20px 0;
+    padding: 10px 5px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+}

@@ -52,7 +52,6 @@
          <div class="card-container">
             <a href="/adoption/adoptionList">입양 게시판<i class="fa-solid fa-chevron-right"></i></a>
 
-
             <!-- 게시글 미존재시 -->
             <th:block th:if="${#lists.isEmpty(adoptList)}">
                 <tr>
@@ -82,6 +81,13 @@
          <div class="card-container">
             <a href="/review/reviewList">입양 후기 게시판<i class="fa-solid fa-chevron-right"></i></a>
 
+            <!-- 게시글 미존재시 -->
+            <th:block th:if="${#lists.isEmpty(reviewList)}">
+                <tr>
+                    <th colspan="6">게시글이 존재하지 않습니다.</th>
+                </tr>
+            </th:block>
+
             <!-- 게시글 존재시 -->
             <div class="card-row">
                <a class="card" th:each="review : ${reviewList}" th:object="${review}" th:if="${reviewStat.index} lt 4"
@@ -98,20 +104,6 @@
                     <span class="card-title" th:text="*{reviewTitle}">후기 게시글 제목</span>
                </a>
             </div>
-         </div>
-
-
-
-
-
-            <!-- <div class="card-row">
-               <a class="card" th:each="review : ${reviewList}" th:object="${review}" th:if="${adoptStat.index} lt 4"
-                  th:href="@{/review/reviewList/{reviewNo} (reviewNo=*{reviewNo})}">
-                    <img class="card-img" src="/images/logo.png" id="card">
-                    <span class="card-title" th:text="*{reviewTitle}">예쁜 강아지</span>
-               </a>
-            </div> -->
-
          </div>
       </section>
 
