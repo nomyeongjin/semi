@@ -98,6 +98,7 @@ public class AdoptionController {
 			
 		}
 		else {
+			
 			path = "adoption/adoptionDetail";
 			model.addAttribute("adopt",adopt);
 		}
@@ -155,14 +156,13 @@ public class AdoptionController {
 	
 	
 	
-	
-	
-	
 	/** 입양문의
 	 * @return
 	 */
 	@GetMapping("adoptionContact")
 	public String contact() { return "adoption/adoptionContact"; }
+	
+	
 	
 	
 	/** 입양 수정 화면 전환
@@ -311,6 +311,8 @@ public class AdoptionController {
 	}
 	
 	
+	
+	
 	/** 문의 페이지 이동
 	 * @return
 	 */
@@ -318,6 +320,8 @@ public class AdoptionController {
 	public String contactAdopt(@PathVariable("adoptNo") int adoptNo) {
 		return "adoption/adoptionContact";
 	}
+	
+	
 	
 	
 	/** 문의 내용 이메일 전송
@@ -337,13 +341,25 @@ public class AdoptionController {
 		
 		String email = service.writerEmail(adoptNo);
 		
+		String adoptName = service.adoptName(adoptNo);
 		
+		
+		int memberNo=loginMember.getMemberNo();
+		
+		String toEmail = service.toEmail(memberNo);
+		contactInput.setMemberEmail(toEmail);
+		
+		contactInput.setAdoptName(adoptName);
+		
+		contactInput.setMemberNo(memberNo);
 		
 		contactInput.setContactEmail(email);
 		
 		contactInput.setAdoptNo(adoptNo);
 		
-		int result = service.sendEmail(contactInput);
+		
+		
+		int result = service.sendEmail("adoptionContactMail",contactInput);
 		
 		model.addAttribute(contactInput);
 		
@@ -351,11 +367,14 @@ public class AdoptionController {
 		String message = null;
 		
 		if(result>0) {
-			path = "/adoption/adoptionList"+adoptNo;
+			path = "/adoption/adoptionList/"+adoptNo;
 			message="문의가 발송되었습니다.";
+			
 		}else {
-			path = "/contactAdopt/"+adoptNo;
+			
+			path = "/adoption/contactAdopt/"+adoptNo;
 			message="문의 발송 실패.";
+			
 		}
 		
 		ra.addFlashAttribute("message",message);
