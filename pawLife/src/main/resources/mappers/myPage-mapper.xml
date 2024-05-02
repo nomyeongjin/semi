@@ -9,6 +9,7 @@
      ADOPT_TYPE , ADOPT_ADDRESS , ADOPT_DEL_FL, ADOPT_COMPL
      FROM "ADOPT"
      WHERE MEMBER_NO =#{memberNo}
+     AND ADOPT_DEL_FL='N'
      ORDER BY ADOPT_NO DESC
    </select>
   
@@ -21,6 +22,8 @@
      
      FROM "REVIEW"
      WHERE MEMBER_No=#{memberNo}
+      AND REVIEW_DEL_FL='N'
+      
       ORDER BY REVIEW_NO DESC
     </select>
     
@@ -34,6 +37,8 @@
     SELECT COMMENT_NO 
     FROM "COMMENT"
     WHERE MEMBER_NO = #{memberNo})
+    AND COMMENT_DEL_FL ='N'
+    
     ORDER BY COMMENT_NO DESC
 
     </select>
@@ -45,6 +50,8 @@
        FROM "BOOKMARK" B
        JOIN "ADOPT" A ON (A.ADOPT_NO = B.ADOPT_NO)
        WHERE B."MEMBER_NO" = #{memberNo}
+       
+       ORDER BY ADOPT_NO DESC
     </select>
     
     
