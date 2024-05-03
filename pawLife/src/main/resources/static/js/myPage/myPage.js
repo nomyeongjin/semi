@@ -40,11 +40,6 @@ const profilebox = document.querySelector("#profileContainer");
 
 
 
-//------------------------------------------------------------------
-/* 페이지 네이션 비동기로 불러오기 */
-
-
-
 
 //--------------------------------------------------------------------
 
@@ -295,7 +290,7 @@ const selectAdoptBoard = (cp) => {
 
 adoptionListBtn.addEventListener('click', () => {
   selectAdoptBoard(1);
-  showMessage();
+
 });
 
 
@@ -465,7 +460,7 @@ boardListBtn.addEventListener('click', () => {
   // profilecontainer가 reviewList로 바꿔어야 함
   /*  getInnerHTML(); */
   selectMyReviewBoard(1);
-  showMessage();
+ 
 
 
 });
@@ -642,7 +637,7 @@ commentListBtn.addEventListener('click', () => {
   // profilecontainer가 reviewList로 바꿔어야 함
   /*  getInnerHTML(); */
   selectMyCommentBoard(1);
-  showMessage();
+
 
 
 });
@@ -815,7 +810,7 @@ const selectMyBookMark = (cp) => {
 bookListBtn.addEventListener('click', () => {
 
   selectMyBookMark(1);
-  showMessage();
+
 
 });
 
