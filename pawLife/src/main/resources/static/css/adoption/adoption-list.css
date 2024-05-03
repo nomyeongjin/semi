@@ -147,7 +147,7 @@ main{
     height: 100%;
 
     font-weight: bold;
-    background-color: #b92828;
+    background-color: #000000;
     border: none;
     color: white;
     border-radius: 20px;
@@ -171,6 +171,7 @@ main{
     width: 20px;
     margin: 0 5px;
     text-align: center;
+    cursor: pointer;
 }
 
 .pagination a{
