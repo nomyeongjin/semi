@@ -24,6 +24,13 @@ body{
     min-height: 100vh;      /* 최소 높이를 화면 비율 100% */
  }
 
+ @font-face {
+    font-family: 'SBAggroB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* ********************************************************************* */
 .title-area{
     display: flex;
@@ -69,6 +76,7 @@ body{
 }
 
 .right-bar{
+    text-align: right;
     padding: 10px 0;
 }
 

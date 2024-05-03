@@ -63,10 +63,7 @@ body{
     flex-direction: column;
 }
 
-/* 이미지 인풋*/
-.adoption-img{
-    display: none;
-}
+
 
 .info-img{
     width: 250px;
