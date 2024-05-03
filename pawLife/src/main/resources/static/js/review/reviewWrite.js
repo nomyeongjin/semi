@@ -150,7 +150,7 @@ const submitPost = document.querySelector("#submitPost");
 
 submitPost.addEventListener("submit", e => {
     
-    oEditors.getById["adoptContent"].exec("UPDATE_CONTENTS_FIELD", []);
+    oEditors.getById["reviewContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
 
     if(statusCheck==0){// flag 값이 true인 경우
@@ -160,11 +160,11 @@ submitPost.addEventListener("submit", e => {
     }
 
 
-   const title = document.querySelector("#adoptTitle");
-   const content = document.querySelector("#adoptContent");
+   const title = document.querySelector("#reviewTitle");
+   const content = document.querySelector("#reviewContent");
 
     /* 유효성 검사 */
-    let str = document.querySelector("#adoptContent").value;
+    let str = document.querySelector("#reviewContent").value;
 
     str = str.replace(/(<p>|<\/p>|\&nbsp\;)/g,"").trim()
 
