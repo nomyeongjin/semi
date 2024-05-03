@@ -23,10 +23,13 @@
     width: 1140px;
     flex-grow: 1;           /* 중심축 방향으로 팽창 */
     height: auto;
-   
-
  }
 
+ .board-name{
+  margin: 50px 0;
+  margin-left: 50px;
+ }
+ 
 /* 게시판 이름 ( 마이페이지 ) */
   main .myPage-content .boardTitle-area{
     text-align: center;
@@ -169,17 +172,18 @@
   width: 20px;
   margin: 0 5px;
   text-align: center;
+  cursor: pointer;
 }
 
-.pagination a{
+.pagination span{
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
 }
 
 .current{
   font-weight: bold;
-  background-color: black;
+  background-color: #b92828 ;
   border-radius: 50%;
   color: white !important;
   letter-spacing: 0 !important;
@@ -297,9 +301,11 @@
 
     width: 80%;
    
+    margin: auto;
     border: 1px solid var(--main-color);/* 나중에 안 보이게 하기 */
     border-radius: 10px;
-    margin: 80px auto;
+    margin-top: 80px;
+    margin-bottom: 50px;
     padding: 16px;  
 
 }
@@ -321,9 +327,65 @@
 }
 
 .profile-updatecontainer > *{
-
+ display: flex;
+ flex-direction: column;
   margin-bottom: 50px;
 }
+#updateOneBtn{
+
+  width: 300px;
+    height: 30px;
+    background-color: #b92828;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.01em;
+    margin-top: 20px;
+    cursor: pointer;
+
+}
+#updateOneBtn:hover{
+  background-color: white;
+    color: #b92828;
+    border: 1px solid #b92828;
+
+}
+#changePwBtn{
+  width: 300px;
+  height: 30px;
+  background-color: #b92828;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.01em;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+#changePwBtn:hover{
+  background-color: white;
+    color: #b92828;
+    border: 1px solid #b92828;
+
+}
+
+/* 목록으로 버튼 */
+#listBtn{
+  border: 1px solid gray;
+  background-color: #fff;
+  width: 100px;
+  height: 40px;
+  color: gray;
+  margin-bottom: 100px;
+  cursor: pointer;
+}
+
+#listBtn:hover{
+  background-color: #ddd;
+}
+
 
 /* 프로필 닉네임 공간 */
 .profileNickNamebox{
@@ -354,6 +416,16 @@
   
 }
 
+.myPage-row{
+  min-width: 439px;
+}
+
+#changePwForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .profile-updatebox >*{
 
 margin-top: 10px;
@@ -370,6 +442,11 @@ margin-top: 10px;
     align-items: center;
  
    
+  }
+
+  #profileUpdateForm{
+    display: flex;
+
   }
 
   .signup-updatebox{
@@ -444,7 +521,7 @@ margin-top: 10px;
 .profileUpdateBtn-area{
   display: flex;
   justify-content: center;
-  margin: 100px;
+  margin: 10px;
 }
 
 #profileCompeleteBtn{
@@ -474,7 +551,8 @@ margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 70px;
+   
+    margin: 20px;
   }
   
   /* 프로필 이미지 */
@@ -492,6 +570,7 @@ margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
     
   }
   
@@ -505,7 +584,6 @@ margin-top: 10px;
   /* 이미지 버튼 영역 */
   .profile-btn-area{
     width: 230px;
-    margin: 20px 0;
   
     display: flex;
     justify-content: center;
@@ -569,11 +647,10 @@ margin-top: 10px;
 /* 프로필 */
 .profileNickName {
   padding: 10px;
-  padding-top: 50px;
+  padding-top: 10px;
   width: 180px;
   border-bottom: 1px solid grey;
-  margin-bottom: 30px;
-  margin: 42px 0;
+  margin-bottom: 10px;
 
 }
 
@@ -619,4 +696,17 @@ td > button:hover {
   background: var(--hover-color);
   border: 1px solid var(--hover-color);
   color: black;
+}
+
+/*********************************************/
+
+input{
+  outline: none;
+    border:none;
+    border-bottom: 1px solid gray;
+    margin: 20px 0;
+    padding: 10px 5px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
 }
