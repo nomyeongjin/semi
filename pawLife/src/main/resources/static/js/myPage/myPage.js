@@ -104,7 +104,7 @@ const selectAdoptBoard = (cp) => {
 
 
         /* 테이블 헤더 만들기 */
-        const headers = ["", "이름", "나이", "종", "발견장소", ""];
+        const headers = ["", "이름", "나이", "종", "발견장소", "입양완료여부"];
         for (let head of headers) {
 
           const th = document.createElement("th");
