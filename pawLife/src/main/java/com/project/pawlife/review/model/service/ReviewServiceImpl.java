@@ -50,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService{
 		
 		int result = mapper.reviewInsert(inputReview);
 		
-		if(result < 0) {
+		if(result > 0) {
 			try {
 				thumnailImg.transferTo(new File(reviewFolderPath + rename));
 			} catch (Exception e) {
