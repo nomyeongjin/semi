@@ -1,7 +1,11 @@
 :root{
     --main-color : rgb(204, 204, 204);
     --title-background-color : rgb(238, 236, 236);
-    /* --hover-color : #e9ae2f; */
+    
+    --main-color : #e2dbc9 ;
+    --hover-color : #b1ab9a;
+    --point-color : #ffbe0c;
+    --submit-color : #b92828;
  }
 
  
@@ -39,11 +43,11 @@
     display: inline-block;
     width: 100px;
     height: 40px;
-    background: black;
-    color: white;
+    background: var(--main-color);
+    color: black;
    
     font-size: 11px;
-    border: 1px solid black;
+    border: 1px solid var(--main-color);
     border-radius: 35px;
     margin: 10px 8px; /* 버튼 간격 */
 
@@ -58,7 +62,8 @@
 /* 선택된 버튼의 배경 색상 설정 */
 .listbtn-area button:hover {
     background-color: white; 
-    color: black;
+    color: var(--hover-color);
+    border: var(--hover-color);
     transition: 0.2s;
 }
 
@@ -133,8 +138,8 @@
 #profileUpdateBtn{
   
     cursor: pointer;
-    border:1px solid black;
-    background-color: black;
+    border:1px solid var(--submit-color);
+    background-color: var(--submit-color);
     color: white;
     height: 30px;
     width: 200px;
@@ -444,12 +449,13 @@ margin-top: 10px;
 
 #profileCompeleteBtn{
    
-    border:1px solid black;
-    background-color: black;
+    border:1px solid var(--submit-color);
+    background-color: var(--submit-color);
     color: white;
     height: 30px;
     width: 200px;
     border-radius: 15px;
+
 
     
 }
@@ -511,7 +517,7 @@ margin-top: 10px;
     height: 30px;
     padding: 5px 10px;
   
-    border: 1px solid black;
+    border: 1px solid var(--main-color);
     border-radius: 15px;
     background-color: white;
     font-size: 14px;
@@ -519,12 +525,26 @@ margin-top: 10px;
     text-align: center;
   }
   
+  .profile-btn-area > label {
+    color: black;
+  }
+  .profile-btn-area > label:hover{
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color : black;
+  }  
+
   #imageInput{ display: none;}
   
   .profile-btn-area > button{
-    background-color: black;
-    color : white;
+    background-color: var(--main-color);
+    color : black;
     margin-left: 2px;
+  }  
+
+  .profile-btn-area > button:hover{
+    border: 1px solid var(--hover-color);
+    background : var(--hover-color);
   }
 
 
@@ -564,7 +584,7 @@ table {
   margin: 100px 50px;
 }
 th {
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--main-color);
   padding: 16px;
 }
 td {
@@ -577,9 +597,9 @@ td {
 }
 #memberDelBtn {
   cursor: pointer;
-  border: 1px solid black;
-  background-color: black;
-  color: white;
+  border: 1px solid var(--main-color);
+  background-color: var(--main-color);
+  color: black;
   height: 30px;
   width: 100px;
   border-radius: 15px;
@@ -589,13 +609,14 @@ td {
 td > button {
   width: 50px;
   height: 26px;
-  background: white;
+  background: var(--main-color);
   cursor: pointer;
   /* font-size: 11px; */
-  border: 1px solid black;
+  border: 1px solid var(--main-color);
   border-radius: 35px;
 }
 td > button:hover {
-  background: black;
-  color: white;
+  background: var(--hover-color);
+  border: 1px solid var(--hover-color);
+  color: black;
 }
