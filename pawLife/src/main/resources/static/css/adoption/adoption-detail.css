@@ -33,11 +33,16 @@ body{
 .btn-area>button{
     width: 60px;
     height: 30px;
-    background-color: #000;
+    background-color: #b92828;
     color: white;
     border: none;
     border-radius: 20px;
     cursor: pointer;
+}
+.btn-area>button:hover{
+    background-color: white;
+    color: #b92828;
+    border: 1px solid #b92828;
 }
 
 
@@ -82,7 +87,7 @@ body{
     cursor: pointer;
 }
 #bookmarkCheck{
-    color: #0c8aff;
+    color: #ffbe0c;
 }
 
 .view-count{
@@ -138,7 +143,7 @@ td{
 #contactBtn{
     width: 300px;
     height: 40px;
-    background-color: #000;
+    background-color: #b92828;
     color: white;
     border: none;
     border-radius: 20px;
@@ -146,6 +151,15 @@ td{
     font-weight: bold;
     margin-top: 100px;
     cursor: pointer;
+}
+#contactBtn:hover{
+    background-color: white;
+    color: #b92828;
+    border: 1px solid #b92828;
+}
+
+th{
+    background-color: #e2dbc9;
 }
 
 /* 목록으로 버튼 */

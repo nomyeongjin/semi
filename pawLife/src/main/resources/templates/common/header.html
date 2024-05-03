@@ -9,12 +9,14 @@
 
             <!-- 로그인, 프로필이미지/닉네임/로그이웃 -->
             <div class="login-box" th:if="${session.loginMember != null}">
-                <a href="/myPage/first">
-                    <img th:with="user=#{user.default.image}" 
-                    th:src="${session.loginMember.profileImg ?:user}"  
-                      id="memberProfile">
-                </a>
-                <a href="/myPage/first" th:text="${session.loginMember.memberNickname}">닉네임</a>
+                <div class="profileArea">
+                    <a href="/myPage/first">
+                        <img th:with="user=#{user.default.image}" 
+                        th:src="${session.loginMember.profileImg ?:user}"  
+                          id="memberProfile">&nbsp;
+                        <span th:text="${session.loginMember.memberNickname}" id="nickname">닉네임</span>&nbsp;<span>님</span>
+                    </a>
+                </div>
                 <a href="/member/logout" id="logoutBtn">로그아웃</a>
             </div>
 

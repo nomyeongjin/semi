@@ -28,14 +28,14 @@ main{
     width: 100px;
     min-width: 100px;
     height: 30px;
-    background-color: #000;
+    background-color: #b92828;
     color: white;
     border-radius: 50px;
     border: none;
 }
 #writeBtn:hover{
     background-color: #fff;
-    color: black;
+    color: #b92828;
     border: 1px solid #ddd;
 }
 
@@ -147,7 +147,7 @@ main{
     height: 100%;
 
     font-weight: bold;
-    background-color: #000000;
+    background-color: #b92828;
     border: none;
     color: white;
     border-radius: 20px;
@@ -181,7 +181,7 @@ main{
 
 .current{
     font-weight: bold;
-    background-color: black;
+    background-color: #b92828;
     border-radius: 50%;
     color: white !important;
     letter-spacing: 0 !important;

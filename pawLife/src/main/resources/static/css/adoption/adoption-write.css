@@ -117,7 +117,7 @@ body{
 #writeBtn{
     width: 300px;
     height: 40px;
-    background-color: #000;
+    background-color: #b92828;
     color: white;
     border: none;
     border-radius: 20px;
@@ -126,6 +126,12 @@ body{
     margin-top: 100px;
     margin-bottom: 100px;
     cursor: pointer;
+}
+
+#writeBtn:hover{
+    background-color: white;
+    color: #b92828;
+    border: 1px solid #b92828;
 }
 
 /* 에디터 */
