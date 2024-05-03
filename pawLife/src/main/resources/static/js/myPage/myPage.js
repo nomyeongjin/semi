@@ -133,6 +133,7 @@ const selectAdoptBoard = (cp) => {
             // 제목인 경우
             if (key == 'thumnail') {
               const img = document.createElement("img");
+              img.classList.add("adopt-img"); // 이미지에 클래스 추가
 
               img.src = adopt[key];
               img.id = "thumbnailP";
@@ -227,7 +228,7 @@ const selectAdoptBoard = (cp) => {
 
         table.append(tbody);
         profilebox.append(table);
-
+        
 
 
         // -------------------------------------------------------------------
@@ -394,7 +395,6 @@ const selectMyReviewBoard = (cp) => {
         table.append(tbody);
 
         profilebox.append(table);
-
         
          //---------------------- 후기 게시글 페이지네이션-----------------------------
          /* pagination */
