@@ -56,6 +56,10 @@ body{
     align-items: center;
     padding: 20px;
 }
+
+.right-bar{
+    padding: 10px 0;
+}
 /* 프로필 이미지 */
 #profile{
     width: 30px;
