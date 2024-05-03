@@ -12,9 +12,10 @@ form {
    flex-direction: column;
    align-content: space-between;
    align-items: center;
-   border: 1px solid grey;
+   border: 1px solid #b1ab9a;
    border-radius: 5px;
    padding: 60px;
+   margin-top: 50px;
    margin-bottom: 100px;
 }
 
