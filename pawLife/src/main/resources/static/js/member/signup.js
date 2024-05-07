@@ -180,6 +180,10 @@ const checkPw = () => {
         checkSign.memberPwConfirm = true;  
         return; 
     }
+    pwMessage.innerText = "비밀번호가 일치하지 않습니다.";
+    pwMessage.classList.add("error");
+    pwMessage.classList.remove("confirm");
+    checkSign.memberPwConfirm = false;
 }
 
 memberPw.addEventListener("input", e => {
@@ -195,7 +199,7 @@ memberPw.addEventListener("input", e => {
     }
 
     // 비밀번호 형식 X
-    const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
+    const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if( !regExp.test(inputPw)) { 
         pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
         pwMessage.classList.add("error");
@@ -322,13 +326,15 @@ memberTel.addEventListener("input", e => {
 });
 
 /* 회원 가입 버튼 클릭시 전체 유효성 여부 확인 */
-const signUpBtn = document.querySelector("#signUpBtn");
+const signUpForm = document.querySelector("#signUpForm");
 
-signUpBtn.addEventListener("click", e => {
+signUpForm.addEventListener("submit", e => {
 
-    for (const key in checkSign) {
+
+    for (let key in checkSign) {
         
         if( !checkSign[key]) {
+
             let str = "";
 
             switch(key){
@@ -340,7 +346,7 @@ signUpBtn.addEventListener("click", e => {
                 case "memberTel": str = "전화번호가 유효하지 않습니다."; break;
             }
             alert(str);
-            document.getElemsentById(key).focus(); // 초점 이동
+            document.getElementById(key).focus(); // 초점 이동
             e.preventDefault(); // 폼태그의 기본이벤트 (제출)막기
             return;
         }

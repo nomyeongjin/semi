@@ -57,7 +57,7 @@
             <!-- 게시글 존재시 -->
             <div class="card-row">
                <a class="card" th:each="adopt : ${adoptList}" th:object="${adopt}" th:if="${adoptStat.index} lt 4"
-                  th:href="@{/adoption/adoptionList/{adoptNo} (adoptNo=*{adoptNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
+                  th:href="@{/adoption/adoptionList/{adoptNo}cp=1 (adoptNo=*{adoptNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
                     <img class="card-img" th:src="*{thumnail}">
                     <span class="card-title" th:text="*{adoptTitle}">입양 게시글 제목</span>
                </a>
@@ -65,7 +65,7 @@
 
             <div class="card-row">
                <a class="card" th:each="adopt : ${adoptList}" th:object="${adopt}" th:if="${adoptStat.index} lt 8 and ${adoptStat.index} gt 3"
-                  th:href="@{/adoption/adoptionList/{adoptNo} (adoptNo=*{adoptNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
+                  th:href="@{/adoption/adoptionList/{adoptNo}cp=1 (adoptNo=*{adoptNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
                     <img class="card-img" th:src="*{thumnail}">
                     <span class="card-title" th:text="*{adoptTitle}">입양 게시글 제목</span>
                </a>
@@ -86,7 +86,7 @@
             <!-- 게시글 존재시 -->
             <div class="card-row">
                <a class="card" th:each="review : ${reviewList}" th:object="${review}" th:if="${reviewStat.index} lt 4"
-                  th:href="@{/review/reviewList/{reviewNo} (reviewNo=*{reviewNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
+                  th:href="@{/review/reviewList/{reviewNo}cp=1 (reviewNo=*{reviewNo})}"> <!-- a 태그 내 class="link" : 원래 추가되어있던 클래스 -->
                     <img class="card-img" th:src="*{thumnail}">
                     <span class="card-title" th:text="*{reviewTitle}">후기 게시글 제목</span>
                </a>
@@ -94,7 +94,7 @@
 
             <div class="card-row">
                <a class="card" th:each="review : ${reviewList}" th:object="${review}" th:if="${reviewStat.index} lt 8 and ${reviewStat.index} gt 3"
-                  th:href="@{/review/reviewList/{reviewNo} (reviewNo=*{reviewNo})}">
+                  th:href="@{/review/reviewList/{reviewNo}cp=1 (reviewNo=*{reviewNo})}">
                     <img class="card-img" th:src="*{thumnail}">
                     <span class="card-title" th:text="*{reviewTitle}">후기 게시글 제목</span>
                </a>
